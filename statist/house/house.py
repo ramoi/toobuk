@@ -7,16 +7,16 @@ class HouseToobuk(Toobuk) :
 		conf = Configure('statist/house', 'house.json')
 		self.__json__ = conf.getJson()
 
-anlyzer = HouseToobuk()
-json = anlyzer.getJson()
+htb = HouseToobuk()
+json = htb.getJson()
 
 
 def getDate() :
-	return anlyzer.get(json.get('getDate'))
+	return htb.get(json.get('getDate'))
 
 def getLoc() :
-	return anlyzer.get(json.get('getLoc'))
+	return htb.get(json.get('getLoc'))
 
 def getTradeIDRatio() :
-	return anlyzer.get(json.get('getTradeIDRatio'))
+	return htb.get(json.get('getTradeIDRatio'))
 
