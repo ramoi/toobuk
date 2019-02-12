@@ -1,0 +1,54 @@
+{
+	"stock" : {
+				"url" : "https://finance.naver.com/item/sise_day.nhn?code=#code#&page=#page#",
+				"bs.type" : "html.parser",
+				"parameter" :  { "arrayKey" : "code", "data" :[{ "code" : "005930" },{"code" : "066570"}] },
+				"join" : { "ref" : "stockDetail", "get" : ["stockName"] },
+				"for" : { "type" : "number", "name" : "page", "start" : 1, "end": 1 },
+				"output" : {
+							"list" :  [	{
+											"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(1) > span.gray03",
+											"name" : "DATE",
+											"regx" : { "pattern" : "\\." , "replace" : "-" }
+										}, {
+											"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(2) > span.p11", 
+											"name" : "END_PRICE",
+											"regx" : { "pattern" : "," , "replace" : "" },
+											"type" : "int"
+										}
+									]
+							}
+			},
+	"cmpr" : { 
+				"url" : "https://finance.naver.com/sise/sise_index_day.nhn?code=#code#&page=#page#",
+				"bs.type" : "html.parser",
+				"parameter" : { "code" : "KOSPI" },
+				"for" : { "type" : "number", "name" : "page", "start" : 1, "end": 1 },
+				"output" : {
+							"list" :  [	{
+											"selector" : "tr > td.date:nth-of-type(1)",
+											"name" : "DATE",
+											"regx" : { "pattern" : "\\." , "replace" : "-" }
+										}, {
+											"selector" : "tr > td.number_1:nth-of-type(2)", 
+											"name" : "END_PRICE",
+											"regx" : { "pattern" : "," , "replace" : "" }
+										}
+									]
+							}
+		},
+	"stockDetail" : {
+				"url" : "https://finance.naver.com/item/main.nhn?code=#code#",
+				"bs.type" : "html.parser",
+				"output" : {
+							"single" :  [ { "selector" :  "dt > strong" ,
+											"name" : "stockName"
+										  }, 
+										  { "selector" :  "#_per" ,
+											"name" : "PER"
+										  }
+									]
+							}
+
+			}
+}

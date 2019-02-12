@@ -1,0 +1,17 @@
+{
+	"nation" : {
+				"url" : "https://www.index.go.kr/potal/stts/idxMain/selectPoSttsIdxMainPrint.do?idx_cd=1072&board_cd=INDX_001",
+				"bs.type" : "html.parser",
+				"output" : {
+							"list" :  [	{
+											"selector" : "thead p span",
+											"name" : "NAME"
+										}, {
+											"selector" : "tbody p", 
+											"name" : "M2_INC_RATE",
+											"type" : "float"
+										}
+									]
+							}
+			}
+}
