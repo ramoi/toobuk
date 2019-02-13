@@ -1,5 +1,6 @@
-from abc import *
+#from abc import *
 from toobuk.conn import Connector
+from toobuk.conf import Configure
 import toobuk.util as util
 
 class ToobukError(Exception) :
@@ -8,13 +9,13 @@ class ToobukError(Exception) :
 # class Toobuk(metaclass=ABCMeta) :
 class Toobuk :
 
-	def __init__(self) :
-		self._setJson()
+	def __init__(self, path) :
+		self._setJson(path)
 		self.__connector = Connector()
 
-	# @abstractmethod
-	def _setJson( self, path=None, filename=None ) :
-		pass
+	def _setJson( self, path ) :
+		conf = Configure( path )
+		self.__json__ = conf.getJson()
 
 	def grumble(self) :
 		pass
@@ -22,10 +23,8 @@ class Toobuk :
 	def getJson(self) :
 		return self.__json__
 
-	def getNotArray( self ) :
-		pass
-
-	def get(self, json, parameter=None) :
+	def get(self, jsonName, parameter=None) :
+		json = self.__json__[jsonName]
 		url = json['url']
 
 		parameter = parameter if parameter is not None else json.get('parameter') if json.get('parameter') is not None else {}
@@ -58,7 +57,7 @@ class Toobuk :
 			return result
 
 	def join(self, result, json, parameter) :
-		joinData = self.get(self.getJson()[json['join']['ref']], parameter)
+		joinData = self.get(json['join']['ref'], parameter)
 
 		for jk in json['join']['get'] :
 			result[jk] = joinData[0][jk]

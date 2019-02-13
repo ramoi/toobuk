@@ -3,7 +3,6 @@ from statist.currency.currency import *
 from statist.debt.debt import *
 from statist.house import house
 
-
 def getStock() :
 	s = StockProgress()
 	resultData = s.grumble()
@@ -12,20 +11,20 @@ def getStock() :
 
 
 def m2() :
-	s = IncreatRatioByNation()
+	s = Currency()
 	resultData = s.grumble()
 
 	print(resultData)
 
 def governmentDebtRatioByGdp() :
-	s = GDebtRation()
+	s = GovernmentDebtRatio()
 	resultData = s.grumble()
 
 	print(resultData)
 
 
 def deptCp() :
-	s = DeptComposition()
+	s = DebtCp()
 	resultData = s.grumble()
 
 	print(resultData)
@@ -50,8 +49,6 @@ if g is '1' :
 elif g is '2' :
 	m2()
 elif g is '3' :
-	print("DATE............")
-	getDate()
 	print("TradeIDRatio............")
 	governmentDebtRatioByGdp()
 	deptCp()

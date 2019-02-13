@@ -16,7 +16,7 @@
 							}
 			},
 
-	"goernmentDebtRatio" : {
+	"governmentDebtRatio" : {
 				"url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1106",
 				"bs.type" : "html.parser",
 				"output" : {

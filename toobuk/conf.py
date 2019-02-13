@@ -7,22 +7,18 @@ def getJson(dir, jsonName) :
 
 	return jsonTuple
 
-if __name__ == "__main__" :
-	#stockJson = json.loads(open('stock.json').read())
-	stockJson = getJson('.', 'stock.json')
-
 class CofigureError(Exception) :
 	pass
 
 class Configure :
-	def __init__(self, dir, name) :
-		self.__load__(dir, name)
+	def __init__(self, path) :
+		self.__load__(path)
 		self.__restructure__()
 
-	def __load__(self, dir, name) :
+	def __load__(self, path) :
 		jsonTuple = None
-		print (os.path.join(dir, name));
-		with open(os.path.join(dir, name) ) as f : 
+		#with open(os.path.join(dir, name) ) as f : 
+		with open( path ) as f : 
 			jsonTuple = json.loads( f.read() )
 
 		self.__json__ = jsonTuple
@@ -43,3 +39,7 @@ class Configure :
 	def getJson(self) : 
 		return self.__json__
 
+
+if __name__ == "__main__" :
+	#stockJson = json.loads(open('stock.json').read())
+	stockJson = getJson('.', 'stock.json')
