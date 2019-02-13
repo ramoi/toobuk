@@ -15,13 +15,13 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
 pip install toobuk 
 
 ## 간단한 설명 
-beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.
-test/test.py를 실행하시면 콘솔을 통해 결과값을 확인할 수 있습니다. 
+beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.<br>
+test/test.py를 실행하시면 콘솔을 통해 결과값을 확인할 수 있습니다. <br>
 
 ## 가장 기본적인 사용법
-test/statist/house 디렉토리에 보시면 house.json이라는 파일이 있습니다. 참고하셔서 보세요
-아래와 같은 내용이 있습나다. 크롤링할 url과 bs에서 사용하는 parser가 정의되어 있습니다.
-output으로 list를 뽑아내는 데 뽑아내는 데이타는 selector에 정의되어 있습니다.
+test/statist/house 디렉토리에 보시면 house.json이라는 파일이 있습니다. 참고하셔서 보세요. <br>
+아래와 같은 내용이 있습나다. 크롤링할 url과 bs에서 사용하는 parser가 정의되어 있습니다. <br>
+output으로 list를 뽑아내는 데 뽑아내는 데이타는 selector에 정의되어 있습니다. <br>
 selector에 대한 설명은 아래 url을 참고 하세요<br>
 
 https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors<br>
@@ -55,9 +55,11 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors<br>
 '''
 
 ## output 조정하기
-배열의 첫번째 값이 이상합니다. 
-위 url로 들어가보시면 페이지 중간에 table이 있습니다. 첫번째 th값이 빈값입니다.
-그리고 데이타 형식으로 YYYY-MM으로 나왔으면 하구요.
+
+배열의 첫번째 값이 이상합니다.<br>
+위 url로 들어가보시면 페이지 중간에 table이 있습니다. 첫번째 th값이 빈값입니다. 아래 그림처럼요..<br>
+<img src='https://user-images.githubusercontent.com/31053133/52697530-fd315c00-2fb4-11e9-9f64-9eec4a5a5cab.PNG' />
+그리고 데이타 형식으로 YYYY-MM으로 나왔으면 하구요.<br>
 그래서 json을 수정합니다.
 '''
 	{
