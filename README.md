@@ -2,14 +2,23 @@
 beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.
 
 ## 차례
-1. [ 간단한 설명] (#간단한 설명)
-1.1 [가장 기본적인 사용법](#가장 기본적인 사용법)
+1. [설치](#설치)
+1. [간단한 설명](#간단한-설명)
+1. [가장 기본적인 사용법](#가장-기본적인-사용법)
+1. [output 조정하기](output-조정하기)
+1. [parameter 설정]([parameter-설정])
+1. [페이징 처리 및 다른 페이지 join]([페이징-처리-및-다른-페이지-join])
+1. [list를 가져오는 다른 방법](#list를-가져오는-다른-방법)
+1. [남은 것들](#남은-것들)
 
-## 1. 간단한 설명 
+## 설치
+pip install toobuk 
+
+## 간단한 설명 
 beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.
 test/test.py를 실행하시면 콘솔을 통해 결과값을 확인할 수 있습니다. 
 
-### 1.1 가장 기본적인 사용법
+## 가장 기본적인 사용법
 test/statist/house 디렉토리에 보시면 house.json이라는 파일이 있습니다. 참고하셔서 보세요
 아래와 같은 내용이 있습나다. 크롤링할 url과 bs에서 사용하는 parser가 정의되어 있습니다.
 output으로 list를 뽑아내는 데 뽑아내는 데이타는 selector에 정의되어 있습니다.
@@ -45,6 +54,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors<br>
 	[{'DATE': '\xa0'}, {'DATE': '201802월'}, {'DATE': '201803월'}, {'DATE': '201804월'}, {'DATE': '201805월'}, {'DATE': '201806월'}, {'DATE': '201807월'}, {'DATE': '201808월'}, {'DATE': '201809월'}, {'DATE': '201810월'}, {'DATE': '201811월'}, {'DATE': '201812월'}, {'DATE': '201901월'}]
 '''
 
+## output 조정하기
 배열의 첫번째 값이 이상합니다. 
 위 url로 들어가보시면 페이지 중간에 table이 있습니다. 첫번째 th값이 빈값입니다.
 그리고 데이타 형식으로 YYYY-MM으로 나왔으면 하구요.
@@ -71,6 +81,8 @@ slice와 regx 속성으로 이를 제어합니다.
 '''
 	[{'DATE': '2018-02'}, {'DATE': '2018-03'}, {'DATE': '2018-04'}, {'DATE': '2018-05'}, {'DATE': '2018-06'}, {'DATE': '2018-07'}, {'DATE': '2018-08'}, {'DATE': '2018-09'}, {'DATE': '2018-10'}, {'DATE': '2018-11'}, {'DATE': '2018-12'}, {'DATE': '2019-01'}]
 '''
+
+그 밖에 형식을 지정할 수 있습니다. 지금은 int와 float만 지원됩니다. 
 
 ## parameter 설정
 statist/stock.json을 참고하셔서 보세요
@@ -140,6 +152,7 @@ https://finance.naver.com/item/sise_day.nhn?code=005930 <br>
 페이징 처리된 데이타와 회사명을 가져오겠습니다.
 
 ## 페이징 처리 및 다른 페이지 join
+
 '''
 	{
 	"stock" : {
@@ -177,6 +190,7 @@ https://finance.naver.com/item/sise_day.nhn?code=005930 <br>
 			}
 	}
 '''
+
 stock 속성으로 join 과 for가 새로 설정되었습니다.
 stockDetail이라는 놈도 하나 더 추가되었네요.
 <br>
@@ -188,7 +202,7 @@ parameter의 data 배열만큼 join문이 돌아갑니다.
 	{'stock': [{'code': '005930', 'data': [{'DATE': '2019-02-12', 'END_PRICE': 46050}, {'DATE': '2019-02-11', 'END_PRICE': 45000}, {'DATE': '2019-02-08', 'END_PRICE': 44800}, {'DATE': '2019-02-07', 'END_PRICE': 46200}, {'DATE': '2019-02-01', 'END_PRICE': 46350}, {'DATE': '2019-01-31', 'END_PRICE': 46150}, {'DATE': '2019-01-30', 'END_PRICE': 46400}, {'DATE': '2019-01-29', 'END_PRICE': 45500}, {'DATE': '2019-01-28', 'END_PRICE': 45050}, {'DATE': '2019-01-25', 'END_PRICE': 44750}, {'DATE': '2019-01-24', 'END_PRICE': 43050}, {'DATE': '2019-01-23', 'END_PRICE': 42000}, {'DATE': '2019-01-22', 'END_PRICE': 42150}, {'DATE': '2019-01-21', 'END_PRICE': 42750}, {'DATE': '2019-01-18', 'END_PRICE': 42300}, {'DATE': '2019-01-17', 'END_PRICE': 41950}, {'DATE': '2019-01-16', 'END_PRICE': 41450}, {'DATE': '2019-01-15', 'END_PRICE': 41100}, {'DATE': '2019-01-14', 'END_PRICE': 40050}, {'DATE': '2019-01-11', 'END_PRICE': 40500}], 'stockName': '삼성전자'}, {'code': '066570', 'data': [{'DATE': '2019-02-12', 'END_PRICE': 71900}, {'DATE': '2019-02-11', 'END_PRICE': 69300}, {'DATE': '2019-02-08', 'END_PRICE': 64800}, {'DATE': '2019-02-07', 'END_PRICE': 65900}, {'DATE': '2019-02-01', 'END_PRICE': 65400}, {'DATE': '2019-01-31', 'END_PRICE': 66600}, {'DATE': '2019-01-30', 'END_PRICE': 67600}, {'DATE': '2019-01-29', 'END_PRICE': 67400}, {'DATE': '2019-01-28', 'END_PRICE': 67700}, {'DATE': '2019-01-25', 'END_PRICE': 69500}, {'DATE': '2019-01-24', 'END_PRICE': 65200}, {'DATE': '2019-01-23', 'END_PRICE': 65200}, {'DATE': '2019-01-22', 'END_PRICE': 64500}, {'DATE': '2019-01-21', 'END_PRICE': 66400}, {'DATE': '2019-01-18', 'END_PRICE': 67000}, {'DATE': '2019-01-17', 'END_PRICE': 66100}, {'DATE': '2019-01-16', 'END_PRICE': 66500}, {'DATE': '2019-01-15', 'END_PRICE': 65800}, {'DATE': '2019-01-14', 'END_PRICE': 65900}, {'DATE': '2019-01-11', 'END_PRICE': 66000}], 'stockName': 'LG전자'}]}
 '''
 "삼성전자", "LG전자" 보이시나요?? 데이타도 좀 더 많아진 것 같습니다. for문이 잘 작동한 걸로 보여요
-하지만 join이 리스트별로는 작동하지 않습니다. 숙제네요.
+하지만 join이 리스트별로는 작동하지 않습니다. 숙제네요.<br>
 
 ## list를 가져오는 다른 방법
 위에서 house.json을 설정했는데 하나 더 넣어보죠...
@@ -236,7 +250,7 @@ parameter의 data 배열만큼 join문이 돌아갑니다.
 '''
 	[{'DATE': 201802, 'COUNTRY': 0.2, 'CAPATIAL': 0.5, 'SEOUL': 0.9, 'SOUTH': 1.2, 'NORTH': 0.7}, {'DATE': 201803, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201804, 'COUNTRY': 0.1, 'CAPATIAL': 0.2, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.3}, {'DATE': 201805, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.2, 'NORTH': 0.3}, {'DATE': 201806, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.4}, {'DATE': 201807, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.4}, {'DATE': 201808, 'COUNTRY': 0.0, 'CAPATIAL': 0.2, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201809, 'COUNTRY': 0.3, 'CAPATIAL': 0.7, 'SEOUL': 1.3, 'SOUTH': 1.5, 'NORTH': 1.0}, {'DATE': 201810, 'COUNTRY': 0.2, 'CAPATIAL': 0.4, 'SEOUL': 0.5, 'SOUTH': 0.5, 'NORTH': 0.6}, {'DATE': 201811, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.3}, {'DATE': 201812, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.0, 'SOUTH': -0.1, 'NORTH': 0.2}, {'DATE': 201901, 'COUNTRY': -0.1, 'CAPATIAL': -0.1, 'SEOUL': -0.2, 'SOUTH': -0.3, 'NORTH': -0.1}]
 '''
-# 남은 것들
+## 남은 것들
 시작하게 된 동기는 python을 공부하면서 무언가를 하나 만들어보면서 다지려는 마음이었습니다. 그런데 진행할 수록 점점 커지더군요 
 json을 읽어올때 단순히 dictionary 로 읽어왔는데, 거기서 부터 실수 인 듯 합니다. 좀 더 구조화 하여서 class로 정의해 나갔다면 소스가 좀 더 깨끗해지고 추후에 수정도 용이했을 텐데 하는 아쉬움이요..<br>
 그리고 output의 list나 single에서 join도 못했구요...<br>
