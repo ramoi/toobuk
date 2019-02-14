@@ -20,8 +20,13 @@ test/test.py를 실행하시면 콘솔을 통해 결과값을 확인할 수 있�
 
 ## 설치
 python을 설치한 후 아래 명령으로 설치할 수 있습니다.  
+pip install toobuk  
 
-pip install toobuk 
+beautifulsoup4가 설치되지 안핬다면 설치해주시길 바랍니다.  
+pip install beautifulsoup4  
+
+설치 여부 확인  
+pip list
 
 ## 가장 기본적인 사용법
 test/statist/house 디렉토리에 보시면 house.json이라는 파일이 있습니다. 참고하셔서 보세요.   
