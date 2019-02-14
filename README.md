@@ -11,6 +11,7 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
 1. [parameter 설정]([parameter-설정])
 1. [페이징 처리 및 다른 페이지 join]([페이징-처리-및-다른-페이지-join])
 1. [list를 가져오는 다른 방법](#list를-가져오는-다른-방법)
+1. [시각화(?)](#시각화)
 1. [남은 것들](#남은-것들)
 
 ## 간단한 설명 
@@ -54,7 +55,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 	htb = Toobuk('test.json')
 	print( htb.get('getDate') )
 
-그리고 콘솔을 열어서 아래 령을 실행합니다.
+그리고 콘솔을 열어서 아래 명령을 실행합니다.
 
 	python test.py
 
@@ -65,9 +66,8 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 ## output 조정하기
 
 배열의 첫번째 값이 이상합니다.  
-위 url로 들어가보시면 페이지 중간에 table이 있습니다. 첫번째 th값이 빈값입니다. 아래 그림처럼요..    
-<img src='https://user-images.githubusercontent.com/31053133/52697530-fd315c00-2fb4-11e9-9f64-9eec4a5a5cab.PNG' /> 
-  
+아래 그림이 위에서 url로 설정한 사이트를 캡쳐한 내용입니다. 테이블의 첫번째 th값이 비어있네요 저 th값을 빼고 가져와야할 듯 싶습니다.  
+![캡쳐화면](https://user-images.githubusercontent.com/31053133/52697530-fd315c00-2fb4-11e9-9f64-9eec4a5a5cab.PNG)
 그리고 데이타 형식으로 YYYY-MM으로 나왔으면 하구요.  
 
 	{
@@ -98,7 +98,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 url의 parameter를 바꿔가면서 실행할 필요가 있겠지요. 방법은 2가지 입니다.
 
 ### parameter 배열 설정 
-statist/stock.json을 참고하셔서 보세요
+statist/stock.json을 참고하셔서 보세요.  
 네이버나 다음에서 주식 정보를 가져오려고 할때 해당 url을 호출하면 됩니다.
 네이버의 경우 주소는 아래와 같은데요  
 
@@ -272,7 +272,7 @@ parameter의 data 배열만큼 join문이 돌아갑니다.
 
 	[{'DATE': 201802, 'COUNTRY': 0.2, 'CAPATIAL': 0.5, 'SEOUL': 0.9, 'SOUTH': 1.2, 'NORTH': 0.7}, {'DATE': 201803, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201804, 'COUNTRY': 0.1, 'CAPATIAL': 0.2, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.3}, {'DATE': 201805, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.2, 'NORTH': 0.3}, {'DATE': 201806, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.4}, {'DATE': 201807, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.4}, {'DATE': 201808, 'COUNTRY': 0.0, 'CAPATIAL': 0.2, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201809, 'COUNTRY': 0.3, 'CAPATIAL': 0.7, 'SEOUL': 1.3, 'SOUTH': 1.5, 'NORTH': 1.0}, {'DATE': 201810, 'COUNTRY': 0.2, 'CAPATIAL': 0.4, 'SEOUL': 0.5, 'SOUTH': 0.5, 'NORTH': 0.6}, {'DATE': 201811, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.3}, {'DATE': 201812, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.0, 'SOUTH': -0.1, 'NORTH': 0.2}, {'DATE': 201901, 'COUNTRY': -0.1, 'CAPATIAL': -0.1, 'SEOUL': -0.2, 'SOUTH': -0.3, 'NORTH': -0.1}]
 
-## 시각화(?)
+## 시각화
 이 놈만 딸랑 개발해 놓으니 좀 밋밋하더라구요. 그래서 vuejs와 d3를 이용해서 chart를 만들어봤는데요.  
 아래에서 확인하실 수 있습니다.  
 역새 이 놈이나 저놈이나 허접합니다. 양해해주시길  
