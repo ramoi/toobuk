@@ -277,13 +277,8 @@ parameter의 data 배열만큼 join문이 돌아갑니다.
 
 	[{'DATE': 201802, 'COUNTRY': 0.2, 'CAPATIAL': 0.5, 'SEOUL': 0.9, 'SOUTH': 1.2, 'NORTH': 0.7}, {'DATE': 201803, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201804, 'COUNTRY': 0.1, 'CAPATIAL': 0.2, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.3}, {'DATE': 201805, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.2, 'NORTH': 0.3}, {'DATE': 201806, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.4}, {'DATE': 201807, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.4}, {'DATE': 201808, 'COUNTRY': 0.0, 'CAPATIAL': 0.2, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201809, 'COUNTRY': 0.3, 'CAPATIAL': 0.7, 'SEOUL': 1.3, 'SOUTH': 1.5, 'NORTH': 1.0}, {'DATE': 201810, 'COUNTRY': 0.2, 'CAPATIAL': 0.4, 'SEOUL': 0.5, 'SOUTH': 0.5, 'NORTH': 0.6}, {'DATE': 201811, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.3}, {'DATE': 201812, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.0, 'SOUTH': -0.1, 'NORTH': 0.2}, {'DATE': 201901, 'COUNTRY': -0.1, 'CAPATIAL': -0.1, 'SEOUL': -0.2, 'SOUTH': -0.3, 'NORTH': -0.1}]
 
-## 시각화
-이 놈만 딸랑 개발해 놓으니 좀 밋밋하더라구요. 그래서 vuejs와 d3를 이용해서 chart를 만들어봤는데요.  
-아래에서 확인하실 수 있습니다.  
-역새 이 놈이나 저놈이나 허접합니다. 양해해주시길  
-https://github.com/ramoi/vue-d3
-
-그리고 이렇게 되니 기왕 한 번 완전한 놈으로 한 번 만들어 보고픈 욕심에 장고와 연동시켜봤습니다.  
+## 장고에서 사용해보기
+이렇게 되니 기왕 한 번 완전한 놈으로 한 번 만들어 보고픈 욕심에 장고와 연동시켜봤습니다.  
 https://github.com/ramoi/toobuk_vued3 
 
 실제 업무에서느 이렇게 쓰진 않겠지요. 빅데이타의 최전방 보명으로 쓰던지, 아니면 데이타베이스에 저장하겠지요.  
@@ -294,4 +289,4 @@ https://github.com/ramoi/toobuk_vued3
 그런데 여기까지 왔네요. 삽질의 연속이었죠. 결과물은 허접해보이고 흠..  
 json을 읽어올때 단순히 dictionary 로 읽어왔는데, 거기서 부터 실수 인 듯 합니다. 좀 더 구조화 하여서 class로 정의해 나갔다면 소스가 좀 더 깨끗해지고 추후에 수정도 용이했을텐데 하는 아쉬움이요..  
 그리고 output의 list나 single에서 join도 못했구요. group by, order by 욕심을 내면 한 도 끝도 없네요..  
-시간이 나는대로, 천천히 만들어가겠습니다. 좀 더 체계적으로. 도와주세요!! ㅎㅎ  
+시간이 나는대로, 천천히 만들어가고 싶네요..
