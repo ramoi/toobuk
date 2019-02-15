@@ -1,0 +1,82 @@
+	{
+	"getDate" : {
+				"url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
+				"bs.type" : "html.parser",
+				"output" : {
+							"list" :  [	{
+											"selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
+											"name" : "DATE",
+											"slice" : {"start": 1 },
+											"regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>-\\g<MM>" }
+										}
+									]
+							}
+			},
+	"stock" : {
+				"url" : "https://finance.naver.com/item/sise_day.nhn?code=#code#&page=#page#",
+				"bs.type" : "html.parser",
+				"parameter" :  { "arrayKey" : "code", "data" :[{ "code" : "005930" },{"code" : "066570"}] },
+				"join" : { "ref" : "stockDetail", "get" : ["stockName"] },
+				"for" : { "type" : "number", "name" : "page", "start" : 1, "end": 2 },
+				"output" : {
+							"list" :  [	{
+											"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(1) > span.gray03",
+											"name" : "DATE",
+											"regx" : { "pattern" : "\\." , "replace" : "-" }
+										}, {
+											"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(2) > span.p11", 
+											"name" : "END_PRICE",
+											"regx" : { "pattern" : "," , "replace" : "" },
+											"type" : "int"
+										}
+									]
+							}
+			},
+	"stockDetail" : {
+				"url" : "https://finance.naver.com/item/main.nhn?code=#code#",
+				"bs.type" : "html.parser",
+				"output" : {
+							"single" :  [ { "selector" :  "dt > strong" ,
+											"name" : "stockName"
+										  }, 
+										  { "selector" :  "#_per" ,
+											"name" : "PER"
+										  }
+									]
+							}
+			},
+	"getTradeIDRatio" : {
+				"url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
+				"bs.type" : "html.parser",
+				"output" : {
+							"list" :  [ {
+											"selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
+											"name" : "DATE",
+											"slice" : {"start": 1 },
+											"regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>\\g<MM>" },
+											"type" : "int"
+										}, {
+											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(1) > td", 
+											"name" : "COUNTRY",
+											"type" : "float"
+										}, {
+											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(2) > td", 
+											"name" : "CAPATIAL",
+											"type" : "float"
+										}, {
+											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(3) > td", 
+											"name" : "SEOUL",
+											"type" : "float"
+										}, {
+											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(4) > td", 
+											"name" : "SOUTH",
+											"type" : "float"
+										}, {
+											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(5) > td", 
+											"name" : "NORTH",
+											"type" : "float"
+										}
+									]
+							}
+			}
+	}

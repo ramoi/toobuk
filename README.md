@@ -11,7 +11,7 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
 	1. [parameter 프로그램에서 넘기기 ](parameter-프로그램에서-넘기기)
 1. [페이징 처리 및 다른 페이지 join]([페이징-처리-및-다른-페이지-join])
 1. [list를 가져오는 다른 방법](#list를-가져오는-다른-방법)
-1. [시각화(?)](#시각화)
+1. [장고에서 사용해보기](#장고에서-사용해보기)
 1. [남은 것들](#남은-것들)
 
 ## 간단한 설명 
@@ -26,10 +26,12 @@ beautifulsoup4가 설치되지 안핬다면 설치해주시길 바랍니다.
 pip install beautifulsoup4  
 
 설치 여부 확인  
-pip list
+pip list  
+
+아래 설명하는 부분에서 test.py와 test.json을 참고하시면서 보시면 됩니다.  
+예제는 [장고에서 사용해보기](#장고에서-사용해보기) 에서도 확인하실 수 있습니다.
 
 ## 가장 기본적인 사용법
-test/statist/house 디렉토리에 보시면 house.json이라는 파일이 있습니다. 참고하셔서 보세요.   
 아래와 같은 내용이 있습나다. 크롤링할 url과 bs.typ에서 사용하는 parser가 정의되어 있습니다.   
 output으로 list를 뽑아내는 데 뽑아내는 데이타는 selector에 정의되어 있습니다.   
 selector에 대한 설명은 아래 url을 참고 하세요  
@@ -51,7 +53,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 	}
 
 
-파이선 코드는 아래와 같습니다. test.py statist/house/house.py 를 참고하세요  
+파이선 코드는 아래와 같습니다.   
 
 일단 위의 설정 파일을 test.json으로 저장합니다.  
 그리고 test.json이 저장된 디렉토리에 역시 test.py로 아래 소스를 저장합니다.  
@@ -103,7 +105,6 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 url의 parameter를 바꿔가면서 실행할 필요가 있겠지요. 방법은 2가지 입니다.
 
 ### parameter 배열 설정 
-statist/stock.json을 참고하셔서 보세요.  
 네이버나 다음에서 주식 정보를 가져오려고 할때 해당 url을 호출하면 됩니다.
 네이버의 경우 주소는 아래와 같은데요  
 
@@ -286,7 +287,7 @@ https://github.com/ramoi/toobuk_vued3
 
 ## 남은 것들
 처음에는 python을 공부하면서, 무언가를 하나 만들어보면서 다지려는 마음이었습니다.  
-그런데 여기까지 왔네요. 삽질의 연속이었죠. 결과물은 허접해보이고 흠..  
+그런데 여기까지 왔네요. 테스트도 부족합니다.  
 json을 읽어올때 단순히 dictionary 로 읽어왔는데, 거기서 부터 실수 인 듯 합니다. 좀 더 구조화 하여서 class로 정의해 나갔다면 소스가 좀 더 깨끗해지고 추후에 수정도 용이했을텐데 하는 아쉬움이요..  
 그리고 output의 list나 single에서 join도 못했구요. group by, order by 욕심을 내면 한 도 끝도 없네요..  
 시간이 나는대로, 천천히 만들어가고 싶네요..

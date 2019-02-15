@@ -52,7 +52,7 @@ class Toobuk :
 			result = self.getData(connUrl, json)
 
 			if 'join' in json :
-				self.join(result, json, parameter)
+				self.join(result[0], json, parameter)
 
 			return result
 
@@ -66,7 +66,6 @@ class Toobuk :
 		if 'for' in json :
 			result = []
 
-
 			paramName = None
 			start = end = step = 0
 			#if json['for']['type'] is 'number' :
@@ -78,11 +77,8 @@ class Toobuk :
 
 				# print('paramName= %s, start = %s, end= %s, step= %s' % (paramName, start, end, step) )
 			else :
-				print( json['for']['type'] is 'number' )
-				print( json['for']['type'] == 'number' )
-				print( type(json['for']['type']) )
-				print( json['for']['type'] )
-
+				raise ToobukError
+				
 			isSingleApply = False
 			for looop in range(start, end, step) :
 				looop = str(looop) if isinstance(looop, int) else looop
@@ -143,7 +139,7 @@ class Toobuk :
 		resultLen = len(result) - 1
 		reg = pattern.get('regx')
 
-		print( pattern.get('selector'))
+		#print( pattern.get('selector'))
 
 		selectList = source.select(pattern.get('selector') ) 
 
