@@ -60,7 +60,7 @@ class Toobuk :
 		joinData = self.get(json['join']['ref'], parameter)
 
 		for jk in json['join']['get'] :
-			result[jk] = joinData[0][jk]
+			result[jk] = joinData[jk]
 
 	def getData(self, url, json) :
 		if 'for' in json :
@@ -78,7 +78,7 @@ class Toobuk :
 				# print('paramName= %s, start = %s, end= %s, step= %s' % (paramName, start, end, step) )
 			else :
 				raise ToobukError
-				
+
 			isSingleApply = False
 			for looop in range(start, end, step) :
 				looop = str(looop) if isinstance(looop, int) else looop
@@ -125,7 +125,8 @@ class Toobuk :
 		if patternList is None : 
 			return
 
-		result = []
+		result = [] if isList else {}
+		
 		for pattern in patternList :
 			if not pattern.get('selector') is None :
 				self.selector(source, pattern, result, isList)
@@ -143,15 +144,20 @@ class Toobuk :
 
 		selectList = source.select(pattern.get('selector') ) 
 
-		def addData(idx, select) :
-			if len(result) < idx + 1:
-				result.append({})
+		# def addData(idx, select) :
+		# 	if len(result) < idx + 1:
+		# 		result.append({})
 
+		# 	if reg is None :
+		# 		result[idx][pattern['name']] = util.toConvert(select.text, pattern.get('type'))
+		# 	else :
+		# 		result[idx][pattern['name']] = util.toConvert( reg['re'].sub( reg['replace'], select.text ), pattern.get('type') )
+
+		def addData(r, select) :
 			if reg is None :
-				result[idx][pattern['name']] = util.toConvert(select.text, pattern.get('type'))
+				r[pattern['name']] = util.toConvert(select.text, pattern.get('type'))
 			else :
-				result[idx][pattern['name']] = util.toConvert( reg['re'].sub( reg['replace'], select.text ), pattern.get('type') )
-
+				r[pattern['name']] = util.toConvert( reg['re'].sub( reg['replace'], select.text ), pattern.get('type') )
 
 		if isList :
 			if not pattern.get('slice') is None :
@@ -160,8 +166,13 @@ class Toobuk :
 				selectList = selectList[start:end]
 
 			for index, select in enumerate(selectList) :
-				addData(index, select)
+				if len(result) < index + 1:
+					result.append({})
+
+				#addData(index, select)
+				addData( result[index], select) 
 		else :
-			addData(0, selectList[0])
+			# addData(0, selectList[0])
+			addData(result, selectList[0])
 
 
