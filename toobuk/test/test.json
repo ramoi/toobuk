@@ -3,14 +3,48 @@
 				"url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
 				"bs.type" : "html.parser",
 				"output" : {
-							"list" :  [	{
-											"selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
-											"name" : "DATE",
-											"slice" : {"start": 1 },
-											"regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>-\\g<MM>" }
+							"date" : { "type" : "list",
+							           "pattern" : [ 
+													{
+														"selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
+														"name" : "DATE",
+														"slice" : {"start": 1 },
+														"regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>-\\g<MM>" }
+													}
+										]
+									}, 
+							"tradeIDRatio" : {  "type" : "list", 
+												"pattern" : [
+											 			{
+															"selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
+															"name" : "DATE",
+															"slice" : {"start": 1 },
+															"regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>\\g<MM>" },
+															"type" : "int"
+														}, {
+															"selector" : "#t_Table_124001 tbody > tr:nth-of-type(1) > td", 
+															"name" : "COUNTRY",
+															"type" : "float"
+														}, {
+															"selector" : "#t_Table_124001 tbody > tr:nth-of-type(2) > td", 
+															"name" : "CAPATIAL",
+															"type" : "float"
+														}, {
+															"selector" : "#t_Table_124001 tbody > tr:nth-of-type(3) > td", 
+															"name" : "SEOUL",
+															"type" : "float"
+														}, {
+															"selector" : "#t_Table_124001 tbody > tr:nth-of-type(4) > td", 
+															"name" : "SOUTH",
+															"type" : "float"
+														}, {
+															"selector" : "#t_Table_124001 tbody > tr:nth-of-type(5) > td", 
+															"name" : "NORTH",
+															"type" : "float"
+														}
+												]
+
 										}
-									]
-							}
 			},
 	"stock" : {
 				"url" : "https://finance.naver.com/item/sise_day.nhn?code=#code#&page=#page#",
@@ -49,34 +83,7 @@
 				"url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
 				"bs.type" : "html.parser",
 				"output" : {
-							"list" :  [ {
-											"selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
-											"name" : "DATE",
-											"slice" : {"start": 1 },
-											"regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>\\g<MM>" },
-											"type" : "int"
-										}, {
-											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(1) > td", 
-											"name" : "COUNTRY",
-											"type" : "float"
-										}, {
-											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(2) > td", 
-											"name" : "CAPATIAL",
-											"type" : "float"
-										}, {
-											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(3) > td", 
-											"name" : "SEOUL",
-											"type" : "float"
-										}, {
-											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(4) > td", 
-											"name" : "SOUTH",
-											"type" : "float"
-										}, {
-											"selector" : "#t_Table_124001 tbody > tr:nth-of-type(5) > td", 
-											"name" : "NORTH",
-											"type" : "float"
-										}
-									]
+
 							}
 			}
 	}

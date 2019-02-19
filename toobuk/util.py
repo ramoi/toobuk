@@ -1,16 +1,14 @@
-def replace(str, r) :
-	for key in r.keys() :
-		str = str.replace('#'+key+'#', r[key])
 
-	return str;
+# def replaceUrl (str, r) :
+# 	for key in r.keys() :
+# 		str = str.replace('#'+key+'#', r[key])
 
-def toBool(str) :
-	return str.lower() is 'true'
+# 	return str;
 
-typeSwitcher = {
-	"int" : int,
-	"float": float
-}
+# def toBool(str) :
+# 	return str.lower() is 'true'
 
-def toConvert(str, dataType) :
-	return str if dataType is None else typeSwitcher[dataType](str)
+# typeSwitcher = {
+# 	"int" : int,
+# 	"float": float
+# }
