@@ -1,6 +1,7 @@
 from abc import *
 import json, os, re
 from urllib.request import urlopen
+import codecs
 from bs4 import BeautifulSoup
 
 from toobuk.pattern.list import Pattern as ListPattern
@@ -49,9 +50,8 @@ class Configure :
 
 	def __load__(self, path) :
 		jsonTuple = None
-		#with open(os.path.join(dir, name) ) as f : 
-		with open( path ) as f : 
-			jsonTuple = json.loads( f.read() )
+		with codecs.open( path, 'r', encoding='utf-8' ) as f : 
+			jsonTuple = json.loads( f.read(), encoding="utf-8" )
 
 		return jsonTuple
 
@@ -72,6 +72,7 @@ class ConnetManager :
 		self.__output__ = Output(json['output'])
 
 	def __makeParameter__(self, parameter, looopJson) :
+		parameter = parameter if not isinstance( parameter, dict ) else [parameter]
 		looop = None
 		if not looopJson is None :
 			if looopJson['type'] == 'number' :
@@ -171,15 +172,15 @@ class OutputElement :
 		resultData = self._p_.apply(source)
 		result.add(self.__eleKey__, resultData, parameter)
 
-		if 'join' in self.__json__ :
-			path = self.__json__['join']['ref']
-			joinResult = toobuk.get(self.__json__['join']['ref'], [ parameter.getOnlyParameter() ] )
+		# if 'join' in self.__json__ :
+		# 	path = self.__json__['join']['ref']
+		# 	joinResult = toobuk.get(self.__json__['join']['ref'], [ parameter.getOnlyParameter() ] )
 
-			pathInfo = toobuk.getPathInfo(path)
-			print( joinResult[pathInfo.group('output')] )
-			print( joinResult )
-			joinData = joinResult[pathInfo.group('output')]['data'] if self.__json__['join']['ref'] == 'list' else joinResult[pathInfo.group('output')][0]['data']
-			result.join( self.__eleKey__, self.__json__['join'], joinData, parameter )
+		# 	pathInfo = toobuk.getPathInfo(path)
+		# 	print( joinResult[pathInfo.group('output')] )
+		# 	print( joinResult )
+		# 	joinData = joinResult[pathInfo.group('output')]['data'] if self.__json__['join']['ref'] == 'list' else joinResult[pathInfo.group('output')][0]['data']
+		# 	result.join( self.__eleKey__, self.__json__['join'], joinData, parameter )
 			
 
 	def getParent(self) :
@@ -195,47 +196,52 @@ class DataSet :
 	def getDataSet(self) :
 		return self.__result__
 
-	def joinData( self, joinJson, result, joinData, parameter ) :
-		if isinstance(joinData, dict) :
-			if isinstance(result, dict) :
-				result.update(joinData)
-			else :
-				joinData['data'] = result 
-				result = joinData
-		else :
-			if isinstance(result, dict) :
-				result['data'] = joinData
-			else :
-				joinKey = joinJson['joinKey']
-				for r in result :
-					for jr in joinData :
-						if r[joinKey[0]] == jr[joinKey[1]] :
-							r.update(jr)
+	# def joinData( self, joinJson, result, joinData, parameter ) :
+	# 	if isinstance(joinData, dict) :
+	# 		if isinstance(result, dict) :
+	# 			result.update(joinData)
+	# 		else :
+	# 			joinData['data'] = result 
+	# 			result = joinData
+	# 	else :
+	# 		if isinstance(result, dict) :
+	# 			result['data'] = joinData
+	# 		else :
+	# 			joinKey = joinJson['joinKey']
+	# 			for r in result :
+	# 				for jr in joinData :
+	# 					if r[joinKey[0]] == jr[joinKey[1]] :
+	# 						r.update(jr)
 
-	def join( self, key, joinJson, joinData, parameter ) :
-		if not key in self.__result__ :
-			return
+	# def join( self, key, joinJson, joinData, parameter ) :
+	# 	if not key in self.__result__ :
+	# 		return
 
-		if parameter.isEmptyParameter() :
-			self.joinData( joinJson, self.__result__[key], joinData, parameter) 
-		else :
-			rEle = None
-			for r in self.__result__[key] :
-				if parameter.isContainedParameter(r) :
-					rEle = r
+	# 	if parameter.isEmptyParameter() :
+	# 		self.joinData( joinJson, self.__result__[key], joinData, parameter) 
+	# 	else :
+	# 		rEle = None
+	# 		for r in self.__result__[key] :
+	# 			if parameter.isContainedParameter(r) :
+	# 				rEle = r
 
-			self.joinData( joinJson, rEle, joinData, parameter) 
+	# 		self.joinData( joinJson, rEle, joinData, parameter) 
 
 	def add( self, key, resultData, parameter ) :
 		if parameter.isEmptyParameter() :
-			self.addForSingle(key, resultData)
+			self.addForOnlyOne(key, resultData)
 		else :
-			self.addForParameter(key, resultData, parameter)
+			self.addForMultiParameter(key, resultData, parameter)
 
 
-	def addForParameter( self, key, resultData, parameter ) :
+	def addForMultiParameter( self, key, resultData, parameter ) :
 		if key in self.__result__ :
 			isContainParameterResult = False
+
+
+			if not isinstance(self.__result__[key], list) :
+				self.__result__[key] = [ self.__result__[key]  ]
+
 			for r in self.__result__[key] :
 				if parameter.isContainedParameter(r) :
 					r['data'] = r['data'] + resultData
@@ -248,9 +254,9 @@ class DataSet :
 		else :
 			r = copyDict( parameter.getOnlyParameter() )
 			r['data'] = resultData
-			self.__result__[key] = [ r ]
+			self.__result__[key] = r
 
-	def addForSingle( self, key, resultData ) :
+	def addForOnlyOne( self, key, resultData ) :
 		if key in self.__result__ :
 			if isinstance(self.__result__[key], dict) :
 				self.__result__[key] = [self.__result__[key]]

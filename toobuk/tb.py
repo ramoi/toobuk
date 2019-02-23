@@ -13,7 +13,7 @@ class Toobuk :
 
 	@staticmethod
 	def __toArray__( s ) :
-		return s.split(',') if s else s
+		return s.split('&') if s else s
 
 	__PATH_REG__ = re.compile(r'^(?P<name>.+?)(/(?P<output>.*))?$')
 
@@ -22,18 +22,18 @@ class Toobuk :
 		return Toobuk.__PATH_REG__.search(path)
 
 
-	def get(self, path, parameter=None, loo0pJson=None) :
-		path = Toobuk.getPathInfo(path)
+	def get(self, path, parameter=None, looopJson=None) :
+		pathInfo = Toobuk.getPathInfo(path)
 
-		connMgr = self.__conf__.getConnectManager(path.group('name'))
-		connector = connMgr.getConnector(parameter, loo0pJson)
+		connMgr = self.__conf__.getConnectManager(pathInfo.group('name'))
+		connector = connMgr.getConnector(parameter, looopJson)
 		output = connMgr.getOutput()
 
 		result = DataSet()
 
 		while connector.hasMoreConnect() :
 			r = connector.connect()
-			output.apply(self, r['source'], result, r['parameter'], Toobuk.__toArray__(path.group('output')) )
+			output.apply(self, r['source'], result, r['parameter'], Toobuk.__toArray__(pathInfo.group('output')) )
 
 		return result.getDataSet()
 
