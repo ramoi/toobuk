@@ -109,7 +109,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 	{'date': [{'DATE': '2018-02'}, {'DATE': '2018-03'}, {'DATE': '2018-04'}, {'DATE': '2018-05'}, {'DATE': '2018-06'}, {'DATE': '2018-07'}, {'DATE': '2018-08'}, {'DATE': '2018-09'}, {'DATE': '2018-10'}, {'DATE': '2018-11'}, {'DATE': '2018-12'}, {'DATE': '2019-01'}]}
 
 그 밖에 형식을 지정할 수 있습니다. 지금은 int와 float만 지원됩니다. 
-[list를 가져오는 다른 방법](#list를-가져오는-다른-방법)에서 확인하실 수 있습니다.
+[output이 여러개 설정된 경우](#output이-여러개-설정된-경우)에서 확인하실 수 있습니다.
 
 ### output이 여러개 설정된 경우
 웹 페이지를 긁어온 경우, 데이타가 여러개 설정이 될 수 있습니다. list가 하나가 될 수 있고, 두개도 될 수 있죠.  
@@ -303,7 +303,7 @@ for 속성 중 name이 page가 있네요. url에 #&page=#page#"가 추가되었�
 데이타가 좀 더 많아진 것 같습니다. for문이 잘 작동한 걸로 보여요  
 
 ## list를 가져오는 다른 방법
-[위](#output이-여러개-설정된-경우) 내용울 가져와보겠습니다.
+[output이 여러개 설정된 경우](#output이-여러개-설정된-경우) 내용울 다시 가져와서 확인해보겠습니다.
 
 	{
 	"housetrade" : {
@@ -364,7 +364,7 @@ for 속성 중 name이 page가 있네요. url에 #&page=#page#"가 추가되었�
 		{'DATE': 201901, 'COUNTRY': -0.1, 'CAPATIAL': -0.1, 'SEOUL': -0.2, 'SOUTH': -0.3, 'NORTH': -0.1}
 	]}
 
-output이 changeRate가 list인데 위에서 for문으로 돌린 것과는 다르네요.  
+output이 changeRate가 list인데 위에서 아래와는 다르죠.  
 parameter가 들어간 경우입니다.
 	
 	{'stockList': [
@@ -380,7 +380,7 @@ outupt에서 설정한 pattern을 배열로 엮은 방식이네요
 이렇게 되니 기왕 한 번 완전한 놈으로 한 번 만들어 보고픈 욕심에 장고와 연동시켜봤습니다.  
 https://github.com/ramoi/toobuk_vued3 
 
-위 내용은 아래 url에서 확인할 수있습니다.
+위 내용은 아래 url에서 확인할 수있습니다.  
 https://toobuk.heroku.com
 
 실제 업무에서느 이렇게 쓰진 않겠지요. 빅데이타의 최전방 보명으로 쓰던지, 아니면 데이타베이스에 저장하겠지요.  
