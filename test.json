@@ -96,42 +96,24 @@
 									}
 							}
 				},
-	"stock" : {
-				"url" : "https://finance.naver.com/item/sise_day.nhn?code=#code#&page=#page#",
-				"bs.type" : "html.parser",
-				"parameter" :  [{ "code" : "005930" },{"code" : "066570"}],
-				"for" : { "type" : "number", "name" : "page", "start" : 1, "end": 1 },
-				"output" : {
-							"stockList" : {   "type" : "list",
-											  "join" : { "ref" : "stockDetail/stockDetail", "get" : ["stockName"] },
-										   "pattern" : [	
-															{
-																"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(1) > span.gray03",
-																"name" : "DATE",
-																"regx" : { "pattern" : "\\." , "replace" : "-" }
-															}, {
-																"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(2) > span.p11", 
-																"name" : "END_PRICE",
-																"regx" : { "pattern" : "," , "replace" : "" },
-																"type" : "int"
-															}
-														]
-										}
-							}
-			},
-	"stockDetail" : {
-				"url" : "https://finance.naver.com/item/main.nhn?code=#code#",
-				"bs.type" : "html.parser",
-				"output" : {
-							"stockDetail" : { "type" : "single" ,
-								           "pattern" : [ { "selector" :  "dt > strong" ,
-															"name" : "stockName"
-														}, 
-														{ "selector" :  "#_per" ,
-															"name" : "PER"
-														}
-													]
-								       }
-							}
-			}
+    "stock" : {
+                "url" : "https://www.msn.com/ko-kr/money/stockdetails/fi-141.1.A#code#",
+                "bs.type" : "html.parser",
+                "parameter" :  [{ "code" : "005930" },{"code" : "066570"}],
+                "output" : {
+                            "stockList" : {   "type" : "single",
+                                           "pattern" : [    
+                                                            {
+                                                                "selector" : "div.header-companyname > h1",
+                                                                "name" : "회사명"
+                                                            }, {
+                                                                "selector" : "span.currentval", 
+                                                                "name" : "END_PRICE",
+                                                                "regx" : { "pattern" : "," , "replace" : "" },
+                                                                "type" : "int"
+                                                            }
+                                                        ]
+                                        }
+                            }
+            }
 	}

@@ -3,10 +3,10 @@ from setuptools import setup, find_packages
  
  
 setup(name='toobuk',
-      version='0.0.2',
+      version='0.5.1',
       url='https://github.com/ramoi/toobuk',
       license='MIT',
-      author='이민기',
+      author='mklee',
       author_email='ramoi@daum.net',
       description='웹크롤링을 도와줍니다.',
       packages=find_packages(exclude=['test','statist']),
