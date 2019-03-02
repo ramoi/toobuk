@@ -11,9 +11,9 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
     1. [output의 특정 그룹 하나 가져오기](#output의-특정-그룹-하나-가져오기)
     1. [output의 여러 그룹 가져오기](#output의-여러-그룹-가져오기)
     1. [output 전체 가져오기](#output-전체-가져오기)
-1. [parameter 설정][#parameter-설정]
-	1. [parameter 배열 설정 ][#parameter-배열-설정]
-	1. [parameter 함수 인자로 넘기기 ][#parameter-함수-인자로-넘기기]
+1. [parameter 설정](#parameter-설정)
+	1. [parameter 배열 설정 ](#parameter-배열-설정)
+	1. [parameter 함수 인자로 넘기기 ](#parameter-함수-인자로-넘기기)
 1. [장고에서 사용해보기](#장고에서-사용해보기)
 1. [남은 것들](#남은-것들)
 
