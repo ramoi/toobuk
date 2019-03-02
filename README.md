@@ -12,10 +12,6 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
 	1. [output의 여러 그룹 가져오기](#output의-여러-그룹-가져오기)
 	1. [output 전체 가져오기](#output-전체-가져오기)
 
-1. [parameter 설정]([parameter-설정])
-	1. [parameter 배열 설정 ](parameter-배열-설정 )
-	1. [parameter 프로그램에서 넘기기 ](parameter-프로그램에서-넘기기)
-1. [페이징 처리]([페이징-처리)
 1. [list를 가져오는 다른 방법](#list를-가져오는-다른-방법)
 1. [장고에서 사용해보기](#장고에서-사용해보기)
 1. [남은 것들](#남은-것들)
@@ -247,60 +243,6 @@ https://finance.naver.com/item/sise_day.nhn?code=#code#
 	]}
 
 output의 그룹명인 stockList를 기준으로  parameter값이 들어가구요. data를 key로 해서 검색된 데이타가 만들어졌습니다.
-
-### parameter 프로그램에서 넘기기
-parameter값이 하나만 필요하다면 가장 단순한 방법은 아래처럼 url에서 code를 변수처리하지 않고 직접 넣어두는 것입니다.
-"url" : "https://finance.naver.com/item/sise_day.nhn?code=005930"  
-
-하지만 프로그램에서 셋팅할 수도 있습니다. 위의 소스를 수정해보죠..  
-
-	resultData = htb.get('stock', {'code': '005490'})
-
-결과는 아래와 같습니다. json에서 설정한 parameter는 무시하고 소스에서 인자로 호출한 code가 호출이되었습니다.
-
-	{'stockList': {'code': '005490', 'data': [{'DATE': '2019-02-25', 'END_PRICE': 272500}, {'DATE': '2019-02-22', 'END_PRICE': 273000}, {'DATE': '2019-02-21', 'END_PRICE': 275500}, {'DATE': '2019-02-20', 'END_PRICE': 273500}, {'DATE': '2019-02-19', 'END_PRICE': 268500}, {'DATE': '2019-02-18', 'END_PRICE': 262500}, {'DATE': '2019-02-15', 'END_PRICE': 265500}, {'DATE': '2019-02-14', 'END_PRICE': 266500}, {'DATE': '2019-02-13', 'END_PRICE': 267000}, {'DATE': '2019-02-12', 'END_PRICE': 265500}]}}
-
-## 페이징 처리 
-https://finance.naver.com/item/sise_day.nhn?code=005930   
-위 주소로 들어가보시면 페이징 처리된 주식정보가 보일겁니다.
-페이징 처리된 데이타를 가져오겠습니다.
-
-	{
-	"stock" : {
-				"url" : "https://finance.naver.com/item/sise_day.nhn?code=#code#&page=#page#",
-				"bs.type" : "html.parser",
-				"parameter" :  [{ "code" : "005930" },{"code" : "066570"}],
-				"for" : { "type" : "number", "name" : "page", "start" : 1, "end": 2 },
-				"output" : {
-							"stockList" : {   "type" : "list",
-										   "pattern" : [	
-															{
-																"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(1) > span.gray03",
-																"name" : "DATE",
-																"regx" : { "pattern" : "\\." , "replace" : "-" }
-															}, {
-																"selector" : "table:nth-of-type(1) > tr > td:nth-of-type(2) > span.p11", 
-																"name" : "END_PRICE",
-																"regx" : { "pattern" : "," , "replace" : "" },
-																"type" : "int"
-															}
-														]
-										}
-							}
-			}
-	}
-
-
-stock 속성으로 **for**가 새로 설정되었습니다.  
-  
-for 속성 중 name이 page가 있네요. url에 #&page=#page#"가 추가되었습니다.  
-
-	{'stockList': [
-		{'code': '005930', 'data': [{'DATE': '2019-02-25', 'END_PRICE': 47300}, {'DATE': '2019-02-22', 'END_PRICE': 47150}, {'DATE': '2019-02-21', 'END_PRICE': 46950}, {'DATE': '2019-02-20', 'END_PRICE': 46900}, {'DATE': '2019-02-19', 'END_PRICE': 45950}, {'DATE': '2019-02-18', 'END_PRICE': 46200}, {'DATE': '2019-02-15', 'END_PRICE': 46050}, {'DATE': '2019-02-14', 'END_PRICE': 47500}, {'DATE': '2019-02-13', 'END_PRICE': 46200}, {'DATE': '2019-02-12', 'END_PRICE': 46050}, {'DATE': '2019-02-11', 'END_PRICE': 45000}, {'DATE': '2019-02-08', 'END_PRICE': 44800}, {'DATE': '2019-02-07', 'END_PRICE': 46200}, {'DATE': '2019-02-01', 'END_PRICE': 46350}, {'DATE': '2019-01-31', 'END_PRICE': 46150}, {'DATE': '2019-01-30', 'END_PRICE': 46400}, {'DATE': '2019-01-29', 'END_PRICE': 45500}, {'DATE': '2019-01-28', 'END_PRICE': 45050}, {'DATE': '2019-01-25', 'END_PRICE': 44750}, {'DATE': '2019-01-24', 'END_PRICE': 43050}]}, 
-		{'code': '066570', 'data': [{'DATE': '2019-02-25', 'END_PRICE': 71100}, {'DATE': '2019-02-22', 'END_PRICE': 73200}, {'DATE': '2019-02-21', 'END_PRICE': 73000}, {'DATE': '2019-02-20', 'END_PRICE': 72700}, {'DATE': '2019-02-19', 'END_PRICE': 72300}, {'DATE': '2019-02-18', 'END_PRICE': 72000}, {'DATE': '2019-02-15', 'END_PRICE': 72000}, {'DATE': '2019-02-14', 'END_PRICE': 72300}, {'DATE': '2019-02-13', 'END_PRICE': 72100}, {'DATE': '2019-02-12', 'END_PRICE': 71900}, {'DATE': '2019-02-11', 'END_PRICE': 69300}, {'DATE': '2019-02-08', 'END_PRICE': 64800}, {'DATE': '2019-02-07', 'END_PRICE': 65900}, {'DATE': '2019-02-01', 'END_PRICE': 65400}, {'DATE': '2019-01-31', 'END_PRICE': 66600}, {'DATE': '2019-01-30', 'END_PRICE': 67600}, {'DATE': '2019-01-29', 'END_PRICE': 67400}, {'DATE': '2019-01-28', 'END_PRICE': 67700}, {'DATE': '2019-01-25', 'END_PRICE': 69500}, {'DATE': '2019-01-24', 'END_PRICE': 65200}]}
-	]}
-
-데이타가 좀 더 많아진 것 같습니다. for문이 잘 작동한 걸로 보여요  
 
 ## list를 가져오는 다른 방법
 [output이 여러개 설정된 경우](#output이-여러개-설정된-경우) 내용울 다시 가져와서 확인해보겠습니다.

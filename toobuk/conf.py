@@ -127,9 +127,8 @@ class Connector :
 		parameter = self.__parameter__[self.__idx__] 
 
 		url =  parameter.replaceUrl(self.__json__['url'])
-		print(url)
 		html = urlopen( url )
-		bs = BeautifulSoup(html, self.__json__['bs.type'])
+		bs = BeautifulSoup(html, self.__json__['bs.type'], from_encoding='utf-8' if self.__json__.get('encoding') is None else self.__json__['encoding'] )
 		self.__idx__ = self.__idx__ + 1
 
 		return { 'source' : bs, 'parameter' : parameter } 
