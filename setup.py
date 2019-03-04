@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
  
  
 setup(name='toobuk',
-      version='0.5.1',
+      version='0.5.2',
       url='https://github.com/ramoi/toobuk',
       license='MIT',
       author='mklee',
