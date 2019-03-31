@@ -11,9 +11,6 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
     1. [output의 특정 그룹 하나 가져오기](#output의-특정-그룹-하나-가져오기)
     1. [output의 여러 그룹 가져오기](#output의-여러-그룹-가져오기)
     1. [output 전체 가져오기](#output-전체-가져오기)
-1. [parameter 설정](#parameter-설정)
-	1. [parameter 배열 설정 ](#parameter-배열-설정)
-	1. [parameter 함수 인자로 넘기기 ](#parameter-함수-인자로-넘기기)
 1. [장고에서 사용해보기](#장고에서-사용해보기)
 1. [남은 것들](#남은-것들)
 
@@ -198,58 +195,6 @@ output에서 설정한 그룹들을 여러개 가져올 수 있습니다.
 	
     #output 전체를 가져옵니다.
     print( htb.get('housetrade') ) 
-
-## parameter 설정
-url의 parameter를 바꿔가면서 실행할 필요가 있겠지요. 방법은 2가지 입니다.
-
-### parameter 배열 설정 
-
-아래 url을 보면 #code#가 있는데요. 해당값을 어디선가 설정해야하지요.  
-아래 보면 **parameter**속성이 있습니다.  
-"code"라는 key값이 url의 #code#와 매칭이 됩니다. replace가 되는 것이지요
-
-    {
-    "stock" : {
-                "url" : "https://www.msn.com/ko-kr/money/stockdetails/fi-141.1.A005930.KRX.#code#",
-                "bs.type" : "html.parser",
-                "parameter" :  [{ "code" : "005930" },{"code" : "066570"}],
-                "output" : {
-                            "stockList" : {   "type" : "list",
-                                           "pattern" : [    
-                                                            {
-                                                                "selector" : "spanaria-level='2'[role='heading']",
-                                                                "name" : "회사명",
-                                                                "regx" : { "pattern" : "\\." , "replace" : "-" }
-                                                            }, {
-                                                                "selector" : "table:nth-of-type(1) > tr > td:nth-of-type(2) > span.p11", 
-                                                                "name" : "END_PRICE",
-                                                                "regx" : { "pattern" : "," , "replace" : "" },
-                                                                "type" : "int"
-                                                            }
-                                                        ]
-                                        }
-                            }
-            }
-    }
-
-소스입니다.
-
-    htb = Toobuk('test')
-    resultData = htb.get('stock')
-    print(resultData)
-
-실행 시켜서 결과를 확인하겠습니다.  
-
-    {'stockList': [{'code': '005930', 'data': {'회사명': '삼성전자', 'END_PRICE': 45100}}, {'code': '066570', 'data': {'회사명': 'LG전자', 'END_PRICE': 70500}}]}
-
-output의 그룹명인 stockList를 기준으로  parameter값이 들어가구요. data를 key로 해서 검색된 데이타가 만들어졌습니다.
-
-### parameter 함수 인자로 넘기기
-저 값을 함수 인자로 넘길 수 있습니다.  
-
-    htb = Toobuk('test')
-    resultData = htb.get('stock', {'code': '005490'})  
-    print(resultData)    
 
 ## 장고에서 사용해보기
 이렇게 되니 기왕 한 번 완전한 놈으로 한 번 만들어 보고픈 욕심에 장고와 연동시켜봤습니다.  

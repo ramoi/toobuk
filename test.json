@@ -115,5 +115,24 @@
                                                         ]
                                         }
                             }
+            },
+    "bok" : {
+                "url" : "http://ecos.bok.or.kr/api/StatisticSearch/2AW23XJLL19KS1EZH75R/xml/kr/1/1000/010Y002/MM/201101/201901/AAAA14/",
+                "bs.type" : "lxml",
+                "output" : {
+                            "currList" : {   "type" : "list",
+                                           "pattern" : [    
+                                                            {
+                                                                "selector" : "row TIME",
+                                                                "name" : "년월"
+                                                            }, {
+                                                                "selector" : "row DATA_VALUE", 
+                                                                "name" : "본원통화",
+                                                                "regx" : { "pattern" : "," , "replace" : "" },
+                                                                "type" : "float"
+                                                            }
+                                                        ]
+                                        }
+                            }
             }
 	}
