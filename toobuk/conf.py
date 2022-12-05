@@ -51,7 +51,8 @@ class Configure :
 	def __load__(self, path) :
 		jsonTuple = None
 		with codecs.open( path, 'r', encoding='utf-8' ) as f : 
-			jsonTuple = json.loads( f.read(), encoding="utf-8" )
+			# jsonTuple = json.loads( f.read(), encoding="utf-8" )
+			jsonTuple = json.loads( f.read() )
 
 		return jsonTuple
 
