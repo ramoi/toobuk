@@ -51,7 +51,8 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
                                                     }
                                                    ]
                                          }
-                }
+                            }
+                    }
     }
 
 일단 위의 설정 파일을 test.json으로 저장합니다.  
@@ -94,6 +95,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
                                                     }
                                                    ]
                                          }
+                            }
                 }
     }
 
