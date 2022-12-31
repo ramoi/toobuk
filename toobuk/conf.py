@@ -16,7 +16,7 @@ def replace(str, *rl) :
 			continue
 
 		for key in r.keys() :
-			str = str.replace('#'+key+'#', r[key])
+			str = str.replace('#'+str(key)+'#', r[key])
 
 	return str
 
@@ -31,7 +31,7 @@ class Configure :
 
 	@classmethod
 	def get(cls, path) :
-		path = path + ".json"
+		path = str(path) + ".json"
 
 		if cls.__list__.get(path) is None :
 			c = Configure(path)
