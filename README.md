@@ -40,7 +40,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 
     {
     "housetrade" : {
-                "url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
+                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
                 "bs.type" : "html.parser",
                 "output" : {
                             "date" : {    "type" : "list",
@@ -82,7 +82,7 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 
     {
     "housetrade" : {
-                "url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
+                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
                 "bs.type" : "html.parser",
                 "output" : {
                             "date" : {    "type" : "list",
@@ -119,7 +119,7 @@ output에 추가만 해주면 됩니다. 밑에 예제가 있습니다.
 
     {
     "housetrade" : {
-                "url" : "http://www.index.go.kr/potal/main/EachDtlPageDetail.do?idx_cd=1240",
+                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
                 "bs.type" : "html.parser",
                 "output" : {
                             "date" : {    "type" : "list",
