@@ -7,18 +7,18 @@ from bs4 import BeautifulSoup
 from toobuk.pattern.list import Pattern as ListPattern
 from toobuk.pattern.single import Pattern as SinglePattern
 
-def replace(str, *rl) :
+def replace(url, *rl) :
 	if (None, None) == rl : 
-		return str
+		return url
 
 	for r in rl :
 		if not r : 
 			continue
 
 		for key in r.keys() :
-			str = str.replace('#'+str(key)+'#', r[key])
+			url = url.replace('#'+str(key)+'#', r[key])
 
-	return str
+	return url
 
 def copyDict( dic ) :
 	return dict(list(dic.items())) if not dic is None else None
