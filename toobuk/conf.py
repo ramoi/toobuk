@@ -1,11 +1,15 @@
 from abc import *
 import json, os, re
 from urllib.request import urlopen
+import requests
 import codecs
 from bs4 import BeautifulSoup
 
 from toobuk.pattern.list import Pattern as ListPattern
 from toobuk.pattern.single import Pattern as SinglePattern
+from toobuk.tlogger import TLoggerFactory
+
+logger = TLoggerFactory.getLogger()
 
 def replace(url, *rl) :
 	if (None, None) == rl : 
@@ -128,7 +132,9 @@ class Connector :
 		parameter = self.__parameter__[self.__idx__] 
 
 		url =  parameter.replaceUrl(self.__json__['url'])
+		logger.info(url)
 		html = urlopen( url )
+		logger.debug(html.getcode())
 		bs = BeautifulSoup(html, self.__json__['bs.type'], from_encoding='utf-8' if self.__json__.get('encoding') is None else self.__json__['encoding'] )
 		self.__idx__ = self.__idx__ + 1
 
@@ -147,7 +153,7 @@ class Output :
 			self._oe_[key] = OutputElement(key, oj[key], self)
 
 	def getJson(self) :
-		return __json__
+		return self.__json__
 
 	def apply(self, toobuk, source, result, parameter, target) :
 		for oe in self._oe_ if not target else target :
