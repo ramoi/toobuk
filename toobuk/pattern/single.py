@@ -12,7 +12,7 @@ class Pattern(AbstractPattern) :
 class PatternElement(AbstractPatternElement) :
 
 	def apply(self, source, result) :
-		selectList = source.select( self.__pattern__.get('selector') )
+		selectList = source.select( self._pattern_.get('selector') )
 		self._addData_(result, selectList[0])
 
 

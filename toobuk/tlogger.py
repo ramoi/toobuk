@@ -2,6 +2,9 @@ import logging
 import logging.config
 import os
 import os.path
+import http.client
+
+http.client.HTTPConnection.debuglevel = 1
 
 class TLoggerFactory :
     __logger__ = {}
@@ -20,8 +23,9 @@ class TLoggerFactory :
             return TLoggerFactory.getEmptyLogger()
         else :
             print("exist logger===========================>", TLoggerFactory.conf['file'])
-            logging.config.fileConfig(TLoggerFactory.conf['file'])
-            return TLoggerFactory.getTLogger(TLoggerFactory.conf['name'])
+            # logging.config.fileConfig(TLoggerFactory.conf['file'])
+            logger = TLoggerFactory.getTLogger()
+            return logger
 
 
     @classmethod
@@ -35,17 +39,18 @@ class TLoggerFactory :
         return __emptyLogger__
 
     @classmethod
-    def getTLogger(cls, name):
-        return TLogger.getLogger(name)
+    def getTLogger(cls):
+        return TLogger.getLogger()
 
 class TLogger:
     __logger__ = {}
 
     @staticmethod
-    def getLogger(name):
+    def getLogger():
+        name = TLoggerFactory.conf['name']
         if name not in TLogger.__logger__ :
+            logging.config.fileConfig(TLoggerFactory.conf['file'])
             logger = logging.getLogger(name)
-            print('logger=============================================>', logger)
             if logger is None:
                 print("logger is None")
                 return
@@ -56,16 +61,16 @@ class TLogger:
 
 class EmptyLogger :
     def debug(self, msg, *args, **kwargs):
-        None
+        print('logging not set')
 
     def info(self, msg, *args, **kwargs):
-        None
+        print('logging not set')
 
     def warning(self, msg, *args, **kwargs):
-        None
+        print('logging not set')
 
     def error(self, msg, *args, **kwargs):
-        None
+        print('logging not set')
 
     def critical(self):
-        None
+        print('logging not set')

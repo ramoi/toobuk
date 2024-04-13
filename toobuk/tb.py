@@ -2,8 +2,6 @@
 from toobuk.conf import Configure, DataSet
 import re
 
-class ToobukError(Exception) :
-	pass
 
 # class Toobuk(metaclass=ABCMeta) :
 class Toobuk :
@@ -22,20 +20,28 @@ class Toobuk :
 		return Toobuk.__PATH_REG__.search(path)
 
 
-	def get(self, path, parameter=None, looopJson=None) :
+	# def get(self, path, parameter=None, headers=None, looopJson=None) :
+	# 	pathInfo = Toobuk.getPathInfo(path)
+	#
+	# 	connMgr = self.__conf__.getConnectManager(pathInfo.group('name'))
+	# 	connector = connMgr.getConnector(headers, parameter, looopJson)
+	# 	output = connMgr.getOutput()
+	#
+	# 	result = DataSet()
+	#
+	# 	while connector.hasMoreConnect() :
+	# 		r = connector.connect()
+	# 		output.apply(self, r['source'], result, r['parameter'], Toobuk.__toArray__(pathInfo.group('output')) )
+	#
+	# 	return result.getDataSet()
+	def get(self, path, parameter=None, headers=None, looopJson=None) :
 		pathInfo = Toobuk.getPathInfo(path)
 
 		connMgr = self.__conf__.getConnectManager(pathInfo.group('name'))
-		connector = connMgr.getConnector(parameter, looopJson)
-		output = connMgr.getOutput()
+		outputPath = Toobuk.__toArray__(pathInfo.group('output'))
 
-		result = DataSet()
+		return connMgr.get(outputPath, parameter, headers, looopJson)
 
-		while connector.hasMoreConnect() :
-			r = connector.connect()
-			output.apply(self, r['source'], result, r['parameter'], Toobuk.__toArray__(pathInfo.group('output')) )
-
-		return result.getDataSet()
 
 	def grumble(self) :
 		pass

@@ -1,28 +1,14 @@
-from abc import *
+import importlib
 import json, os, re
-from urllib.request import urlopen
-import requests
 import codecs
-from bs4 import BeautifulSoup
-
+from toobuk.connector import GetConnector, PostConnector
 from toobuk.pattern.list import Pattern as ListPattern
 from toobuk.pattern.single import Pattern as SinglePattern
 from toobuk.tlogger import TLoggerFactory
+import toobuk.util as ut
 
 logger = TLoggerFactory.getLogger()
 
-def replace(url, *rl) :
-	if (None, None) == rl : 
-		return url
-
-	for r in rl :
-		if not r : 
-			continue
-
-		for key in r.keys() :
-			url = url.replace('#'+str(key)+'#', r[key])
-
-	return url
 
 def copyDict( dic ) :
 	return dict(list(dic.items())) if not dic is None else None
@@ -103,44 +89,43 @@ class ConnetManager :
 					p.append( Parameter( pEle, lEle) )
 			return p
 
-	def getConnector( self, parameter, looopJson ) :
-		if ( None, None ) == ( parameter, looopJson ) :
-			return Connector(self.__parameter__, self.__json__ )
+	def getConnector( self, headers, parameter, looopJson ) :
+		# if ( None, None ) == ( parameter, looopJson ) :
+		# 	return Connector(self.__parameter__, self.__json__ )
 
 		looopJson = self.__json__.get('for') if looopJson is None else looopJson 
 		param = self.__parameter__ if parameter is None else self.__makeParameter__(parameter, looopJson)
 
-		return Connector( param, self.__json__ )
+		conType = self.__json__.get('conn.type')
+		if conType is None or conType == "get" :
+			return GetConnector(headers, param, self.__json__)
+		elif conType == "post" :
+			return PostConnector(headers, param, self.__json__)
+		else :
+			module, cls = ut.getdinfo(conType)
+
+			mod = importlib.import_module(module)
+			userConnector = getattr(mod, cls)(headers, param, self.__json__)
+			return userConnector
+
+		# return Connector( param, self.__json__ )
 
 	def getOutput(self) :
 		return self.__output__
 
+	def get(self, outputPath, parameter=None, headers=None, looopJson=None) :
+		connector = self.getConnector(headers, parameter, looopJson)
+		output = self.getOutput()
 
-class Connector :
-	def __init__( self,  parameter, json ) :
-		self.__parameter__ = parameter
-		self.__json__ = json
-		self.__idx__ = 0
+		result = DataSet()
 
-	def isFirst( self ) :
-		return self.__idx__ == 0
+		while connector.hasMoreConnect() :
+			r = connector.get()
+			output.apply(self, r['source'], result, r['parameter'], outputPath)
 
-	def hasMoreConnect(self) :
-		return self.__idx__ < len(self.__parameter__) 
+		return result.getDataSet()
 
-	def connect(self) :
-		parameter = self.__parameter__[self.__idx__] 
-
-		url =  parameter.replaceUrl(self.__json__['url'])
-		logger.info(url)
-		html = urlopen( url )
-		logger.debug(html.getcode())
-		bs = BeautifulSoup(html, self.__json__['bs.type'], from_encoding='utf-8' if self.__json__.get('encoding') is None else self.__json__['encoding'] )
-		self.__idx__ = self.__idx__ + 1
-
-		return { 'source' : bs, 'parameter' : parameter } 
-
-class Output : 
+class Output :
 	def __init__(self, oj) :
 		self.__json__ = oj
 		self._oe_ = {}
@@ -202,37 +187,6 @@ class DataSet :
 	def getDataSet(self) :
 		return self.__result__
 
-	# def joinData( self, joinJson, result, joinData, parameter ) :
-	# 	if isinstance(joinData, dict) :
-	# 		if isinstance(result, dict) :
-	# 			result.update(joinData)
-	# 		else :
-	# 			joinData['data'] = result 
-	# 			result = joinData
-	# 	else :
-	# 		if isinstance(result, dict) :
-	# 			result['data'] = joinData
-	# 		else :
-	# 			joinKey = joinJson['joinKey']
-	# 			for r in result :
-	# 				for jr in joinData :
-	# 					if r[joinKey[0]] == jr[joinKey[1]] :
-	# 						r.update(jr)
-
-	# def join( self, key, joinJson, joinData, parameter ) :
-	# 	if not key in self.__result__ :
-	# 		return
-
-	# 	if parameter.isEmptyParameter() :
-	# 		self.joinData( joinJson, self.__result__[key], joinData, parameter) 
-	# 	else :
-	# 		rEle = None
-	# 		for r in self.__result__[key] :
-	# 			if parameter.isContainedParameter(r) :
-	# 				rEle = r
-
-	# 		self.joinData( joinJson, rEle, joinData, parameter) 
-
 	def add( self, key, resultData, parameter ) :
 		if parameter.isEmptyParameter() :
 			self.addForOnlyOne(key, resultData)
@@ -287,8 +241,33 @@ class Parameter :
 	def getLoop(self) :
 		return self.__looop__
 
+	@staticmethod
+	def replace(url, *rl):
+		if (None, None) == rl:
+			return url
+
+		for r in rl:
+			if not r:
+				continue
+
+			for key in r.keys():
+				url = url.replace('#' + str(key) + '#', r[key])
+
+		return url
+
 	def replaceUrl(self, url) :
-		return replace( url, self.__param__, self.__looop__  )
+		return Parameter.replace( url, self.__param__, self.__looop__  )
+
+	def getData(self) :
+		data = {}
+		for r in [self.__param__, self.__looop__]:
+			if not r:
+				continue
+
+			for key in r.keys():
+				data[key] = r[key]
+
+		return data
 
 	def isEmpty(self) :
 		return not bool( self.__param__ or self.__looop__ )
@@ -298,4 +277,3 @@ class Parameter :
 
 	def isContainedParameter(self, json) :
 		return self.__param__.items() < json.items()
-
