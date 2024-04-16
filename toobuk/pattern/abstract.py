@@ -43,11 +43,8 @@ class AbstractPatternElement(metaclass=ABCMeta) :
 	def __init__(self, ptnEle, parent) :
 		self._parent_ = parent
 		self._pattern_ = ptnEle
-		self._type_ = parent.getParent().getJson()['type']
 
 		self.converter = self.__makeConverter__()
-		self.skip = None
-
 		self._makeUp_()
 
 	def __makeConverter__(self) :
@@ -94,8 +91,8 @@ class Converter :
 	__converter__['float'] = lambda text, r : float(text)
 	__converter__['regx'] = ut.regConverter
 
-	C = re.compile(r'(?P<name>\w+(\.\w+)?)(?:\((?P<args>(\w+)=((([\'"]).+?\7)|[0-9.]+))+\))?')
-	A = re.compile(r'(?P<key>\w+)=(?P<value>(([\'"]).*?\4)|[0-9.]+)')
+	C = re.compile(r'(?P<name>\w+(\.\w+)?)(?:\((?P<args>(\w+)=((([\'"]).+?\7)|[0-9.]+|(\[\{).*\8))+\))?')
+	A = re.compile(r'(?P<key>\w+)=(?P<value>(([\'"]).*?\4)|[0-9.]+|(\[\{).*\5)')
 
 	def __add__(self, converter) :
 		self.__list__.append(converter)

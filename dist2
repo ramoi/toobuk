@@ -1,0 +1,6 @@
+python setup.py sdist
+cd dist
+python -m pip install .\toobuk-0.7.2.tar.gz
+
+
+pip install selenium

@@ -11,6 +11,8 @@ class Pattern(AbstractPattern) :
 
 class PatternElement(AbstractPatternElement) :
 
+	def _makeUp_(self) :
+		pass
 	def apply(self, source, result) :
 		selectList = source.select( self._pattern_.get('selector') )
 		self._addData_(result, selectList[0])

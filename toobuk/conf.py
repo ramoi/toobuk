@@ -1,7 +1,6 @@
-import importlib
 import json, os, re
 import codecs
-from toobuk.connector import GetConnector, PostConnector
+from toobuk.connector_v1 import GetConnector, PostConnector
 from toobuk.pattern.list import Pattern as ListPattern
 from toobuk.pattern.single import Pattern as SinglePattern
 from toobuk.tlogger import TLoggerFactory
@@ -14,7 +13,8 @@ def copyDict( dic ) :
 	return dict(list(dic.items())) if not dic is None else None
 
 class ConfigureError(Exception) :
-	pass
+	def __init__(self, msg) :
+		super().__init__(msg)
 
 class Configure :
 	__list__ = {}
@@ -58,6 +58,7 @@ class ConnetManager :
 
 		##parameter 설정
 		self.__parameter__ = self.__makeParameter__(json.get('parameter'), json.get('for') )
+		self.__connector__ = self.__makeConnector__( )
 
 		##output 설정
 		self.__output__ = Output(json['output'])
@@ -73,7 +74,7 @@ class ConnetManager :
 
 				looop = [ { looopJson['name'] : str(pf) } for pf in range( start, end, step ) ]
 			else :
-				raise ConfigureError
+				raise ConfigureError('Not support number for loop')
 
 		if ( parameter, looop) == ( None, None ) :
 			return [ Parameter()]
@@ -89,38 +90,41 @@ class ConnetManager :
 					p.append( Parameter( pEle, lEle) )
 			return p
 
-	def getConnector( self, headers, parameter, looopJson ) :
-		# if ( None, None ) == ( parameter, looopJson ) :
-		# 	return Connector(self.__parameter__, self.__json__ )
-
-		looopJson = self.__json__.get('for') if looopJson is None else looopJson 
-		param = self.__parameter__ if parameter is None else self.__makeParameter__(parameter, looopJson)
-
+	def __makeConnector__(self) :
 		conType = self.__json__.get('conn.type')
 		if conType is None or conType == "get" :
-			return GetConnector(headers, param, self.__json__)
+			return GetConnector(self.__json__)
 		elif conType == "post" :
-			return PostConnector(headers, param, self.__json__)
+			return PostConnector(self.__json__)
 		else :
-			module, cls = ut.getdinfo(conType)
+			return ut.runPlugin(conType, self.__json__)
 
-			mod = importlib.import_module(module)
-			userConnector = getattr(mod, cls)(headers, param, self.__json__)
-			return userConnector
 
-		# return Connector( param, self.__json__ )
+	def getParameter(self) :
+		return self.__parameter__
+
+	def getRealParameter(self, parameter, looopJson) :
+		return self.__parameter__ if(parameter, looopJson) == (None, None) else self.__makeParameter__(parameter, looopJson)
+
+
+	def getConnector( self ) :
+		# looopJson = self.__json__.get('for') if looopJson is None else looopJson
+		# param = self.__parameter__ if parameter is None else self.__makeParameter__(parameter, looopJson)
+		return self.__connector__
 
 	def getOutput(self) :
 		return self.__output__
 
 	def get(self, outputPath, parameter=None, headers=None, looopJson=None) :
-		connector = self.getConnector(headers, parameter, looopJson)
+		connector = self.getConnector()
 		output = self.getOutput()
+
+		paramList:[] = self.getRealParameter(parameter, looopJson)
 
 		result = DataSet()
 
-		while connector.hasMoreConnect() :
-			r = connector.get()
+		for param in paramList :
+			r = connector.get(headers, param)
 			output.apply(self, r['source'], result, r['parameter'], outputPath)
 
 		return result.getDataSet()
@@ -162,17 +166,6 @@ class OutputElement :
 	def apply(self, toobuk, source, result, parameter) :
 		resultData = self._p_.apply(source)
 		result.add(self.__eleKey__, resultData, parameter)
-
-		# if 'join' in self.__json__ :
-		# 	path = self.__json__['join']['ref']
-		# 	joinResult = toobuk.get(self.__json__['join']['ref'], [ parameter.getOnlyParameter() ] )
-
-		# 	pathInfo = toobuk.getPathInfo(path)
-		# 	print( joinResult[pathInfo.group('output')] )
-		# 	print( joinResult )
-		# 	joinData = joinResult[pathInfo.group('output')]['data'] if self.__json__['join']['ref'] == 'list' else joinResult[pathInfo.group('output')][0]['data']
-		# 	result.join( self.__eleKey__, self.__json__['join'], joinData, parameter )
-			
 
 	def getParent(self) :
 		return self.__parent__
