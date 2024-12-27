@@ -2,6 +2,7 @@
 beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.
 
 ## 차례
+1. [TooBuk이란?](#TooBuk이란?)
 1. [설치](#설치)
 1. [간단한 설명](#간단한-설명)
 1. [가장 기본적인 사용법](#가장-기본적인-사용법)
@@ -15,7 +16,7 @@ beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주
 1. [남은 것들](#남은-것들)
 
 ## 개요
-toobuk은 웹크롤링을 손쉽게 할 수 있는 라이브러리입니다.
+toobuk은 웹크롤링을 손쉽게 할 수 있는 라이브러리입니다.   
 우리는 보통 크롤링을 한다고 한다면 대게 아래와 같은 흐름을 따를 겁니다.
 1. url로 해당 사이트를 접속한 뒤(보통, urlopen함수 혹은 requests 라이브러리를 이용)
 2. 크롤링 대상이 되는 웹페이지의 html 소스를 가져옵니다
@@ -25,23 +26,25 @@ toobuk은 웹크롤링을 손쉽게 할 수 있는 라이브러리입니다.
 4. 얻어온 데이타를 그대로 수집하는 경우도 있지만, 숫자에서 콤마를 제거한다거나 날짜 형식을 바꾼다거나 아니면 다른 이유로 수집한 데이타를 가공을 하게 됩니다
 5. 최종 데이타를 저장 혹은 사용자가 볼 수 있는 페이지에 보내겠죠.
 
-저런 흐름대로 소스를 작성한 뒤, 잘 돌아가던 프로그램이 안되는 경우가 있죠. 아마도 html 소스가 바뀌거나 url이 바뀌거나 다른 여러가지 이유로.
-그러면 개발자는 바뀐 부분을 다시 찾아서 소스에서 수정을 해 나가야 합니다. 여러 페이지를 크롤링해서 데이탈를 수집하는 경우, 아마 비슷한 소스일테고 그 부분을 찾아가는 경우도 그리 어렵지 않을겁니다.
-하지마 담당자가 바뀌거나 하면, 얘기가 또 달라지죠. 
-toobuk을 사용하면 그런 부분들을 대처하기가 쉬워집니다. toobuk은 위 흐름 중 1~4번을 자동으로 해줍니다.
-하지만 자동으로 해 주기 위해서는 관리되어야 할 설정값이 있습니다. url 같은.
+보통은 위에서 기술한 일련의 흐름이 프로그램에 녹아있을겁니다. 그리고 어느 날, 오류가 발생하면 url이 바뀌었는지 html이 바뀌었는지 체크해 나갈겁니다.   
+
+**소스를 확인하면서요.**   
+
+그리고 오류가 나는 부분을 찾아서 수정하면 됩니다.  
+toobuk을 사용하면 소스를 직접 확인하지 않아도 대처하기가 쉬워집니다.   
+toobuk은 위 흐름 중 1~4번을 자동화 해주죠.  
+하지만 자동으로 해주기 위해서는 관리되어야 할 설정값이 있습니다. 예를 들면, url 같은.   
 결국 toobuk은 url, 정보를 찾으려는 html 노드 정보(css selector), output형식 등을 설정 파일로 따로 저장합니다. 그리고 프로그램에서 그 설정파일을 읽어들여서 크롤링을 해 오는 거죠.
-[가장 기본적인 사용법](#가장-기본적인-사용법)을 보시면 바로 그 사용법을 아실 수 있을 겁니다.
-사실 python 소스는 넉넉하게 3줄이면 끝입니다.
+[가장 기본적인 사용법](#가장-기본적인-사용법)을 보시면 바로 그 사용법을 아실 수 있을 겁니다.   
+사실 python 소스는, 문서를 읽어 나가면 알겠지만 그리 길지 않습니다. 나머지는 그 설정값을 채워나가는 것이죠.
+그리고 toobuk에서는 플러그인 형태로 받아들이는 부분이 있어서, 필요한 경우 사용하시면 됩니다.   
+플러그인도 사실, 간단한 함수를 만드는 경우가 대부부 입니다.
 
 ## 설치
 
-toobuk은 기본적으로 beautifulsoup4, requests 를 이용합니다.
+toobuk은 기본적으로 beautifulsoup4, requests 를 이용합니다.   
 pip install beautifulsoup4  
 pip install requests
-
-만일, html이 아닌 xml을 가져오야 한다면 lxml을 설치하셔야 합니다.
-pip install lxml
 
 toobuk을 설치합니다.
 pip install toobuk
@@ -50,19 +53,18 @@ pip install toobuk
 pip list  
 
 아래 설명하는 부분에서 test.py와 test.json을 참고하시면서 보시면 됩니다.  
-예제는 [장고에서 사용해보기](#장고에서-사용해보기) 에서도 확인하실 수 있습니다.
+예제는 [장고에서 사용해보기](#장고에서-사용해보기) 에서도 확인하실 수 있습니다.   
+
+만일, html이 아닌 xml을 가져오야 한다면 lxml을 설치하셔야 합니다.
+pip install lxml
+
+동적 웹크롤링이 필요한 경우가 많을 것입니다. 
+pip install selenium
 
 ## 가장 기본적인 사용법
-아래와 같은 내용이 있습나다. 크롤링할 url과 bs.typ에서 사용하는 parser가 정의되어 있습니다.   
-output으로 list를 뽑아내는 데, 뽑아내는 데이타는 selector에 정의되어 있습니다.   
-selector에 대한 설명은 아래 url을 참고 하세요  
-
-https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors  
-
     {
     "housetrade" : {
                 "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
-                "bs.type" : "html.parser",
                 "output" : {
                             "date" : {    "type" : "list",
                                        "pattern" : [ 
@@ -79,10 +81,10 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 일단 위의 설정 파일을 test.json으로 저장합니다.  
 그리고 test.json이 저장된 디렉토리에 역시 test.py로 아래 소스를 저장합니다.  
 
-    from toobuk.tb import Toobuk
+    from toobuk import Toobuk
 
     htb = Toobuk('test') #설정 파일 test.json, .json은 생략
-    print( htb.get('housetrade') ) 
+    print( htb.grumble('housetrade') ) 
 
 그리고 콘솔을 열어서 아래 명령을 실행합니다.
 
@@ -90,7 +92,47 @@ https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
 
 결과는 아래와 같습니다.
 
-    [{'DATE': '\xa0'}, {'DATE': '201802월'}, {'DATE': '201803월'}, {'DATE': '201804월'}, {'DATE': '201805월'}, {'DATE': '201806월'}, {'DATE': '201807월'}, {'DATE': '201808월'}, {'DATE': '201809월'}, {'DATE': '201810월'}, {'DATE': '201811월'}, {'DATE': '201812월'}, {'DATE': '201901월'}]
+     {'date': [{'DATE': '\xa0'}, {'DATE': '202304월'}, {'DATE': '202305월'}, {'DATE': '202306월'}, {'DATE': '202307월'}, {'DATE': '202308월'}, {'DATE': '202309월'}, {'DATE': '202310월'}, {'DATE': '202311월'}, {'DATE': '202312월'}, {'DATE': '202401월'}, {'DATE': '202402월'}, {'DATE': '202403월'}]}
+
+
+## Connection 설정
+소스에서는 크롤링 하기 위한 정보를 볼 수 없습니다. 다만, 설정 파일에서 그 내용을 확인할 수 있지요   
+설정 파일 내용을 다시 살펴보겠습니다.
+
+    {
+    "housetrade" : {
+                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
+                "output" : {
+                            "date" : {    "type" : "list",
+                                       "pattern" : [ 
+                                                    {
+                                                        "selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
+                                                        "name" : "DATE"
+                                                    }
+                                                   ]
+                                         }
+                            }
+                    }
+    }
+
+**housetrade**는 개발자가 직접 지어주며 됩니다. 그냥 trade라고 해도 무방합니다. 다만, 저 이름으로 python 소스에서 호출을 하게 됩니다.
+호출하는 파일선 소스르 보면 아래와 같습니다. 
+
+    print( htb.grumble('housetrade') ) 
+
+그리고 url은 크롤링할 url 주소를 적어주면 됩니다.   
+**output**은 실제로 html소스에서 데이타를 뽑아내기 위한 설정들입니다.   
+**date**는 개발자가 뽑아내길 원하는 데이타에에 대해서 이름을 지어준 것입니다.
+
+
+설정 파일 내용을 다시 한 번 볼까요?
+아래와 같은 내용이 있습나다. 크롤링할 url이 적혀있습니다.
+output으로 list를 뽑아내는 데, 뽑아내는 데이타는 selector에 정의되어 있습니다.   
+selector에 대한 설명은 아래 url을 참고 하세요
+
+https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
+### url
+크롤링할 타겟이 되는 사이트 url을 적어줍니다.
 
 ## output 설정
 
