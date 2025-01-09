@@ -1,4 +1,7 @@
-python setup.py sdist
+toobuk
+python setup.py sdist bdist_wheel
+
+toobuk 설치
 cd dist
 python -m pip install .\toobuk-0.7.2.tar.gz
 

@@ -24,10 +24,12 @@ class Configure :
 		path = str(path) + ".json"
 
 		if cls.__list__.get(path) is None :
+			logger.debug('path initialize, path==>{}'.format(path))
 			c = Configure(path)
 			cls.__list__[path] = c
 			return c
 		else :
+			logger.debug('path exists {}'.format(path))
 			return cls.__list__[path]
 
 	def __init__(self, path) :
@@ -52,7 +54,17 @@ class Configure :
 	def getConnectManager(self, name) :
 		return self.__conf__[name]['connectManager']
 
-class ConnetManager : 
+class ConnetManager :
+
+	__connector__ = {}
+	__connector__['get'] = GetConnector
+	__connector__['post'] = PostConnector
+
+	@staticmethod
+	def addConnector(name, connector) :
+		logger.debug('add connector => name={} connector={}'.format(name, connector.__name__) )
+		ConnetManager.__connector__[name] = connector
+
 	def __init__(self, json) :
 		self.__json__ = json
 
@@ -91,14 +103,12 @@ class ConnetManager :
 			return p
 
 	def __makeConnector__(self) :
-		conType = self.__json__.get('conn.type')
-		if conType is None or conType == "get" :
-			return GetConnector(self.__json__)
-		elif conType == "post" :
-			return PostConnector(self.__json__)
-		else :
-			return ut.runPlugin(conType, self.__json__)
+		conType = self.__json__.get('conn.type') or 'get'
 
+		if ConnetManager.__connector__.get(conType) is None :
+			return ut.runPlugin(conType, self.__json__)
+		else :
+			return ConnetManager.__connector__[conType](self.__json__)
 
 	def getParameter(self) :
 		return self.__parameter__
@@ -158,7 +168,9 @@ class OutputElement :
 		self._makeUp_()
 
 	def _makeUp_( self ) :
-		if self.__json__['type'] == 'list' :
+		outType = self.__json__.get('type') or "single"
+
+		if outType == 'list' :
 			self._p_ = ListPattern(self.__json__['pattern'], self)
 		else :
 			self._p_ = SinglePattern(self.__json__['pattern'], self)

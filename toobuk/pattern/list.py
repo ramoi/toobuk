@@ -115,6 +115,7 @@ class Skipper :
 
 	@staticmethod
 	def addSkipper(name, skipper) :
+		logger.debug('add skipper => name={}, skipper={}'.format(name,skipper.__name__))
 		Skipper.__skipper__[name] = skipper
 
 	TYPE_STR = re.compile(r'([\'"])(?P<value>.*)\1')

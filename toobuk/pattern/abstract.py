@@ -2,7 +2,9 @@ import importlib
 from abc import *
 import re
 import toobuk.util as ut
+from toobuk.tlogger import TLoggerFactory
 
+logger = TLoggerFactory.getLogger()
 
 TYPE_SWITCHER = {
 	"int" : int,
@@ -44,11 +46,30 @@ class AbstractPatternElement(metaclass=ABCMeta) :
 		self._parent_ = parent
 		self._pattern_ = ptnEle
 
-		self.converter = self.__makeConverter__()
+		self._selector_ = ptnEle.get("selector")
+		self._attrList_ = []
+
+		target = ptnEle.get("target")
+		if target is None :
+			self._attrList_.append( {
+				'name': ptnEle['name'],
+				'attr':'__text__',
+				'converter' : self.__makeConverter__(ptnEle.get('converter'))
+			})
+		else :
+			for tar in target :
+				if isinstance(tar, dict) :
+					tar['converter'] = self.__makeConverter__(tar.get('converter'))
+					self._attrList_.append(tar)
+				else :
+					self._attrList_.append( { 'name': tar, 'attr': tar, 'converter' : self.__makeConverter__(None)} )
+
+		# self.converter = self.__makeConverter__()
+
 		self._makeUp_()
 
-	def __makeConverter__(self) :
-		converterText = self._pattern_.get('converter')
+	def __makeConverter__(self, converterText) :
+		# converterText = self._pattern_.get('converter')
 		return Converter(converterText)
 
 	# def __makeConveter__(self) :
@@ -73,7 +94,10 @@ class AbstractPatternElement(metaclass=ABCMeta) :
 	# 			return lambda text, r : TYPE_SWITCHER[t]( text )
 
 	def _addData_(self, r, select) :
-		r[self._pattern_['name']] = self.converter.convert(select.text, r)
+		for attr in self._attrList_ :
+			value = select.text if attr['attr'] == '__text__' else select[attr['attr']]
+			r[attr['name']] = attr['converter'].convert(value, r)
+		# r[self._pattern_['name']] = self.converter.convert(select.text, r)
 
 	@abstractmethod
 	def _makeUp_(self):
@@ -99,6 +123,7 @@ class Converter :
 
 	@staticmethod
 	def addConverter(name, converter) :
+		logger.debug('add converter => name={}, converter={}'.format(name, converter.__name__) )
 		Converter.__converter__[name] = converter
 
 	@staticmethod
