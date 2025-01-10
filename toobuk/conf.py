@@ -20,6 +20,10 @@ class Configure :
 	__list__ = {}
 
 	@classmethod
+	def init(cls) :
+		cls.__list__ = {}
+
+	@classmethod
 	def get(cls, path) :
 		path = str(path) + ".json"
 
