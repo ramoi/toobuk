@@ -24,48 +24,6 @@ class PatternElement(AbstractPatternElement):
 		skipText = self._pattern_.get('skip')
 		return Skipper(skipText)
 
-	# def __makeSkip__(self) :
-	# 	if not self._pattern_.get('skip') is None:
-	# 		skip = self._pattern_.get('skip')
-	# 		skipFunc = ut.getPlugin(skip)
-	#
-	# 		def skip(selectList, r) :
-	# 			resultList = []
-	# 			for select in selectList:
-	# 				if not skipFunc(select.text, r):
-	# 					resultList.append(select)
-	#
-	# 			return resultList
-	#
-	# 		return skip
-	# 	if not self._pattern_.get('skip.value') is None:
-	# 		def skip(selectList, r) :
-	# 			resultList = []
-	# 			for select in selectList:
-	# 				if select.text != self._pattern_['skip.value']:
-	# 					resultList.append(select)
-	#
-	# 			return resultList
-	#
-	# 		return skip
-	# 	elif not self._pattern_.get('slice') is None:
-	# 		slice = self._pattern_.get('slice')
-	# 		if isinstance(slice, dict):
-	# 			slice = [slice]
-	#
-	# 		def skip(selectList, r) :
-	# 			resultList = []
-	# 			for s in slice:
-	# 				sp = s.get('start') or 0
-	# 				ep = s.get('end') or len(selectList)
-	# 				resultList = resultList + selectList[sp:ep]
-	#
-	# 			return resultList
-	#
-	# 		return skip
-	# 	else :
-	# 		return lambda select, r : select
-
 	def apply(self, source, result):
 		selectList = source.select(self._pattern_.get('selector'))
 		resultList = self.skipper.skip(selectList, result)
@@ -91,14 +49,14 @@ def __slice__(sa):
 	return skip
 
 
-findx = 0
+# findx = 0
 def __getFunc__(f) :
-	print(str(++findx) + f.__name__)
+	# logger.debug(str(++findx) f.__name__)
 
 	def skipF(selectList, r) :
 		resultList = []
 		for select in selectList:
-			if not f(select.text, r) :
+			if not f(select, r) :
 				resultList.append(select)
 
 		return resultList
@@ -107,7 +65,7 @@ def __getFunc__(f) :
 
 class Skipper :
 	__skipper__:dict = {}
-	__skipper__['white'] =  lambda text, r : text.isspace()
+	__skipper__['white'] =  lambda select, r : select.text.isspace()
 	__skipper__['slice'] =  __slice__
 
 	C = re.compile(r'(?P<name>\w+(\.\w+)?)(?:\((?P<args>(\w+)=((([\'"]).+?\7)|[0-9.]+|\[.*\]|\{.*\}))+\))?')
@@ -118,8 +76,11 @@ class Skipper :
 		logger.debug('add skipper => name={}, skipper={}'.format(name,skipper.__name__))
 		Skipper.__skipper__[name] = skipper
 
+	#ex :'aaa' 혹은 "aaa"
 	TYPE_STR = re.compile(r'([\'"])(?P<value>.*)\1')
+	#ex 12.34
 	TYPE_FLOAT = re.compile(r'\d+.\d*?')
+	#ex 12
 	TYPE_INT = re.compile(r'\d+?')
 
 	@staticmethod
@@ -183,7 +144,7 @@ class Skipper :
 	def skip(self, selectList, result) :
 		resultList = selectList
 		for f in self.__list__ :
-			print(f.__name__)
+			logger.debug(f.__name__)
 			resultList = f(resultList, result)
 
 		return resultList
