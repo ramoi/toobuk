@@ -1,67 +1,39 @@
 # TOOBUK
-beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.
+beautifulsoup을 이용하여 웹 크롤링을 쉽게할 수 있도록 도와주는 모듈입니다.  
+소스에서 웹페이지 접속 정보와 html에서 읽어올 selector(css selector이며, jquery가 익숙한 분들은 $함수에서 사용하던 바로 그것입니다.) 정보를 설정정보로 따로 분리하는 것입니다.
+때문에, 추후 URL이 바뀌거나 html이 바뀌면 해당 부분을 설정 파일에서 간단히 수정하면 되는거죠.
 
 ## 차례
-1. [TooBuk이란?](#TooBuk이란?)
-1. [설치](#설치)
-1. [간단한 설명](#간단한-설명)
-1. [가장 기본적인 사용법](#가장-기본적인-사용법)
-1. [output 설정](#output-설정)
-    1. [output 조정하기](#output-조정하기)
-    1. [output이 여러개 설정된 경우](#output이-여러개-설정된-경우)
-    1. [output의 특정 그룹 하나 가져오기](#output의-특정-그룹-하나-가져오기)
-    1. [output의 여러 그룹 가져오기](#output의-여러-그룹-가져오기)
-    1. [output 전체 가져오기](#output-전체-가져오기)
-1. [docker 설치 후, 확인](#장고에서-사용해보기)
+1. [맛보기](#맛보기)
+   1. [설치](#설치)
+   1. [소스 작성](#소스-작성)
+1. [상세 기능](#상세-기능)
+1. [docker](#docker)
 1. [남은 것들](#남은-것들)
 
-## 개요
-toobuk은 웹크롤링을 손쉽게 할 수 있는 라이브러리입니다.   
-우리는 보통 크롤링을 한다고 한다면 대게 아래와 같은 흐름을 따를 겁니다.
-1. url로 해당 사이트를 접속한 뒤(보통, urlopen함수 혹은 requests 라이브러리를 이용)
-2. 크롤링 대상이 되는 웹페이지의 html 소스를 가져옵니다
-3. 해당 소스에서 얻고자 하는 정보를 가져옵니다.(보통 beautifulsoup 라이브러리를 이용) 보통은 아래 두가지 방법을 이용해서 가져오죠.
-   1) css selector
-   2) 정규표현식
-4. 얻어온 데이타를 그대로 수집하는 경우도 있지만, 숫자에서 콤마를 제거한다거나 날짜 형식을 바꾼다거나 아니면 다른 이유로 수집한 데이타를 가공을 하게 됩니다
-5. 최종 데이타를 저장 혹은 사용자가 볼 수 있는 페이지에 보내겠죠.
 
-보통은 위에서 기술한 일련의 흐름이 프로그램에 녹아있을겁니다. 그리고 어느 날, 오류가 발생하면 url이 바뀌었는지 html이 바뀌었는지 체크해 나갈겁니다.   
+## 맛보기 
+   일단 간단하게 설치를 해보시죠.  
 
-**소스를 확인하면서요.**   
-
-그리고 오류가 나는 부분을 찾아서 수정하면 됩니다.  
-toobuk을 사용하면 소스를 직접 확인하지 않아도 대처하기가 쉬워집니다.   
-toobuk은 위 흐름 중 1~4번을 자동화 해주죠.  
-하지만 자동으로 해주기 위해서는 관리되어야 할 설정값이 있습니다. 예를 들면, url 같은.   
-결국 toobuk은 url, 정보를 찾으려는 html 노드 정보(css selector), output형식 등을 설정 파일로 따로 저장합니다. 그리고 프로그램에서 그 설정파일을 읽어들여서 크롤링을 해 오는 거죠.
-[가장 기본적인 사용법](#가장-기본적인-사용법)을 보시면 바로 그 사용법을 아실 수 있을 겁니다.   
-사실 python 소스는, 문서를 읽어 나가면 알겠지만 그리 길지 않습니다. 나머지는 그 설정값을 채워나가는 것이죠.
-그리고 toobuk에서는 플러그인 형태로 받아들이는 부분이 있어서, 필요한 경우 사용하시면 됩니다.   
-플러그인도 사실, 간단한 함수를 만드는 경우가 대부부 입니다.
-
-## 설치
+   ### 설치
 
 toobuk은 기본적으로 beautifulsoup4, requests 를 이용합니다.   
-pip install beautifulsoup4  
-pip install requests
+
+      pip install beautifulsoup4  
+      pip install requests
 
 toobuk을 설치합니다.
-pip install toobuk
+      
+      pip install toobuk
 
 설치 여부 확인  
-pip list  
 
-아래 설명하는 부분에서 test.py와 test.json을 참고하시면서 보시면 됩니다.  
-예제는 [장고에서 사용해보기](#장고에서-사용해보기) 에서도 확인하실 수 있습니다.   
+      pip list  
 
-만일, html이 아닌 xml을 가져오야 한다면 lxml을 설치하셔야 합니다.
-pip install lxml
+   ### 소스 작성
+   아래를 임의의 이름으로 저장합니다. 확장자는 json으로 
+   저는 test.json으로 저장하겠습니다.
 
-동적 웹크롤링이 필요한 경우가 많을 것입니다. 
-pip install selenium
-
-## 가장 기본적인 사용법
     {
     "housetrade" : {
                 "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
@@ -78,8 +50,7 @@ pip install selenium
                     }
     }
 
-일단 위의 설정 파일을 test.json으로 저장합니다.  
-그리고 test.json이 저장된 디렉토리에 역시 test.py로 아래 소스를 저장합니다.  
+그리고 test.json이 저장된 디렉토리에 역시 test.py로 아래 소스를 저장합니다.
 
     from toobuk import Toobuk
 
@@ -94,178 +65,20 @@ pip install selenium
 
      {'date': [{'DATE': '\xa0'}, {'DATE': '202304월'}, {'DATE': '202305월'}, {'DATE': '202306월'}, {'DATE': '202307월'}, {'DATE': '202308월'}, {'DATE': '202309월'}, {'DATE': '202310월'}, {'DATE': '202311월'}, {'DATE': '202312월'}, {'DATE': '202401월'}, {'DATE': '202402월'}, {'DATE': '202403월'}]}
 
+물론 여기서 끝이 아닙니다. 좀 더 많은 정보를 해당 페이지에서 뽑아올 수 있으며, 뽑아온 데이타를 가공할 수도 있습니다.
+페이징 처리된 url에서 데이타를 뽑아올 수도 있으며, selenium을 이용할 수도 있습니다.  
+위에 내용은 그저 맛보기일 뿐입니다.
 
-## Connection 설정
-소스에서는 크롤링 하기 위한 정보를 볼 수 없습니다. 다만, 설정 파일에서 그 내용을 확인할 수 있지요   
-설정 파일 내용을 다시 살펴보겠습니다.
+## 상세 기능
+좀 더 상세한 기능에 대한 정보는 아래에서 확인할 수 있습니다. 직접 소스를 확인하며 실행해보세요.  
 
-    {
-    "housetrade" : {
-                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
-                "output" : {
-                            "date" : {    "type" : "list",
-                                       "pattern" : [ 
-                                                    {
-                                                        "selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
-                                                        "name" : "DATE"
-                                                    }
-                                                   ]
-                                         }
-                            }
-                    }
-    }
+https://github.com/ramoi/toobuk_test
 
-**housetrade**는 개발자가 직접 지어주며 됩니다. 그냥 trade라고 해도 무방합니다. 다만, 저 이름으로 python 소스에서 호출을 하게 됩니다.
-호출하는 파일선 소스르 보면 아래와 같습니다. 
+## docker
+혹시, 서비스 내용을 확인하고 싶다면 docker를 설치 후, 아래 내용을 확인해 보세요.  
 
-    print( htb.grumble('housetrade') ) 
-
-그리고 url은 크롤링할 url 주소를 적어주면 됩니다.   
-**output**은 실제로 html소스에서 데이타를 뽑아내기 위한 설정들입니다.   
-**date**는 개발자가 뽑아내길 원하는 데이타에에 대해서 이름을 지어준 것입니다.
-
-
-설정 파일 내용을 다시 한 번 볼까요?
-아래와 같은 내용이 있습나다. 크롤링할 url이 적혀있습니다.
-output으로 list를 뽑아내는 데, 뽑아내는 데이타는 selector에 정의되어 있습니다.   
-selector에 대한 설명은 아래 url을 참고 하세요
-
-https://www.crummy.com/software/BeautifulSoup/bs4/doc/#css-selectors
-### url
-크롤링할 타겟이 되는 사이트 url을 적어줍니다.
-
-## output 설정
-
-### output 조정하기
-
-배열의 첫번째 값이 이상합니다.  
-아래 그림이 위에서 url로 설정한 사이트를 캡쳐한 내용입니다. 테이블의 첫번째 th값이 비어있네요 저 th값을 빼고 가져와야할 듯 싶습니다.  
-![캡쳐화면](https://user-images.githubusercontent.com/31053133/52697530-fd315c00-2fb4-11e9-9f64-9eec4a5a5cab.PNG)
-그리고 데이타 형식으로 YYYY-MM으로 나왔으면 하구요.  
-
-    {
-    "housetrade" : {
-                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
-                "bs.type" : "html.parser",
-                "output" : {
-                            "date" : {    "type" : "list",
-                                       "pattern" : [ 
-                                                    {
-                                                        "selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
-                                                        "name" : "DATE",
-                                                        "slice" : {"start": 1 },
-                                                        "regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>-\\g<MM>" }
-                                                    }
-                                                   ]
-                                         }
-                            }
-                }
-    }
-
-
-**slice**속성으로 첫번째 th부분을 제외했으며, **regx** 속성으로 포맷을 원하는 형태로 바꿨습니다.  
-regx에서는 정규표현식을 사용하는데요. 정규표현식 관련 내용은 아래 사이트에서 확인할수 있습니다.  
-https://regexr.com/  
-더해서 python에서는 하위표현식을 묶어내면서 이름표를 붙일 수 있는데요. 예제에서 보며 **YYYY**, **MM**이 그 내용입니다. 관련 내용은 아래에서 확인할 수 있습니다.  
-https://wikidocs.net/4309#_7
-
-    {'date': [{'DATE': '2018-02'}, {'DATE': '2018-03'}, {'DATE': '2018-04'}, {'DATE': '2018-05'}, {'DATE': '2018-06'}, {'DATE': '2018-07'}, {'DATE': '2018-08'}, {'DATE': '2018-09'}, {'DATE': '2018-10'}, {'DATE': '2018-11'}, {'DATE': '2018-12'}, {'DATE': '2019-01'}]}
-
-그 밖에 형식을 지정할 수 있습니다. 지금은 int와 float만 지원됩니다. 
-[output이 여러개 설정된 경우](#output이-여러개-설정된-경우)에서 확인하실 수 있습니다.
-
-### output이 여러개 설정된 경우
-웹 페이지를 긁어온 경우, 데이타가 여러개 설정이 될 수 있습니다. list가 하나가 될 수 있고, 두개도 될 수 있죠.  
-리스트가 아니라 일반 단일 형식이 또 있을 수 있습니다. 그 단일형식을 또 여러개로 나눌 수 있죠.  
-output에 추가만 해주면 됩니다. 밑에 예제가 있습니다.
-
-
-    {
-    "housetrade" : {
-                "url" : "https://www.index.go.kr/unity/potal/eNara/sub/showStblGams3.do?stts_cd=124001&idx_cd=1240&freq=Y&period=N",
-                "bs.type" : "html.parser",
-                "output" : {
-                            "date" : {    "type" : "list",
-                                       "pattern" : [ 
-                                                    {
-                                                        "selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
-                                                        "name" : "DATE",
-                                                        "slice" : {"start": 1 },
-                                                        "regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>-\\g<MM>" }
-                                                    }
-                                                   ]
-                                         }, 
-                    "changeRate" : {     "type" : "list", 
-                                           "join" : { "ref" : "housecharter/changeRate", "joinKey" : ["DATE", "DATE"] },
-                                        "pattern" : [
-                                                     {
-                                                        "selector" : "#t_Table_124001 thead > tr:nth-of-type(1) > th",
-                                                        "name" : "DATE",
-                                                        "slice" : {"start": 1 },
-                                                        "regx" : { "pattern" : "(?P<YYYY>\\d{4})(?P<MM>\\d{2})." , "replace" : "\\g<YYYY>\\g<MM>" },
-                                                        "type" : "int"
-                                                    }, {
-                                                        "selector" : "#t_Table_124001 tbody > tr:nth-of-type(1) > td", 
-                                                        "name" : "COUNTRY",
-                                                        "type" : "float"
-                                                    }, {
-                                                        "selector" : "#t_Table_124001 tbody > tr:nth-of-type(2) > td", 
-                                                        "name" : "CAPATIAL",
-                                                        "type" : "float"
-                                                    }, {
-                                                        "selector" : "#t_Table_124001 tbody > tr:nth-of-type(3) > td", 
-                                                        "name" : "SEOUL",
-                                                        "type" : "float"
-                                                    }, {
-                                                        "selector" : "#t_Table_124001 tbody > tr:nth-of-type(4) > td", 
-                                                        "name" : "SOUTH",
-                                                        "type" : "float"
-                                                    }, {
-                                                        "selector" : "#t_Table_124001 tbody > tr:nth-of-type(5) > td", 
-                                                        "name" : "NORTH",
-                                                        "type" : "float"
-                                                    }
-                                                    ]
-
-                                    }
-                            }
-                }
-        }
-
-위에서는 output으로 date만 있었는데요.  changeRate가 하나더 생겼습니다. python코드는 아래와 같습니다.
-
-    from toobuk.tb import Toobuk
-
-    htb = Toobuk('test') #설정 파일 test.json, .json은 생략
-
-아래는 결과입니다. 그룹명(date, changeRate)을 기준으로 데이타가 만들어졌습니다.
-
-    {
-        'date': [{'DATE': '2018-02'}, {'DATE': '2018-03'}, {'DATE': '2018-04'}, {'DATE': '2018-05'}, {'DATE': '2018-06'}, {'DATE': '2018-07'}, {'DATE': '2018-08'}, {'DATE': '2018-09'}, {'DATE': '2018-10'}, {'DATE': '2018-11'}, {'DATE': '2018-12'}, {'DATE': '2019-01'}], 
-
-        'changeRate': [{'DATE': 201802, 'COUNTRY': 0.2, 'CAPATIAL': 0.5, 'SEOUL': 0.9, 'SOUTH': 1.2, 'NORTH': 0.7}, {'DATE': 201803, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201804, 'COUNTRY': 0.1, 'CAPATIAL': 0.2, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.3}, {'DATE': 201805, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.2, 'NORTH': 0.3}, {'DATE': 201806, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.4}, {'DATE': 201807, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.3, 'SOUTH': 0.3, 'NORTH': 0.4}, {'DATE': 201808, 'COUNTRY': 0.0, 'CAPATIAL': 0.2, 'SEOUL': 0.6, 'SOUTH': 0.6, 'NORTH': 0.6}, {'DATE': 201809, 'COUNTRY': 0.3, 'CAPATIAL': 0.7, 'SEOUL': 1.3, 'SOUTH': 1.5, 'NORTH': 1.0}, {'DATE': 201810, 'COUNTRY': 0.2, 'CAPATIAL': 0.4, 'SEOUL': 0.5, 'SOUTH': 0.5, 'NORTH': 0.6}, {'DATE': 201811, 'COUNTRY': 0.1, 'CAPATIAL': 0.3, 'SEOUL': 0.2, 'SOUTH': 0.1, 'NORTH': 0.3}, {'DATE': 201812, 'COUNTRY': 0.0, 'CAPATIAL': 0.1, 'SEOUL': 0.0, 'SOUTH': -0.1, 'NORTH': 0.2}, {'DATE': 201901, 'COUNTRY': -0.1, 'CAPATIAL': -0.1, 'SEOUL': -0.2, 'SOUTH': -0.3, 'NORTH': -0.1}]
-    }
-### output의 특정 그룹 하나 가져오기
-    #output에서 설정한 값 중 date만 가져옵니다.
-    print( htb.get('housetrade/date') ) 
-
-### output의 여러 그룹 가져오기
-output에서 설정한 그룹들을 여러개 가져올 수 있습니다.
-
-    #&로 엮어서 가져오면 됩니다.
-    print( htb.get('housetrade/date&changeRate') ) 
-
-### output 전체 가져오기
-
-	
-    #output 전체를 가져옵니다.
-    print( htb.get('housetrade') ) 
-
-## docker 설치 후, 확인
-이렇게 되니 기왕 한 번 완전한 놈으로 한 번 만들어 보고픈 욕심에 장고와 연동시켜봤습니다.  
+장고와 연동된 소스입니다.    
 https://github.com/ramoi/toobuk_vued3 
-
-위 내용은 docker를 설치하신 후에 확인할 수 있습니다.
 
 콘솔에서 아래 명령어로 확인할 수 있습니다.
 
@@ -277,10 +90,10 @@ http://127.0.0.1:8000
 
 
 실제 업무에서느 이렇게 쓰진 않겠지요. 빅데이타의 최전방 보명으로 쓰던지, 아니면 데이타베이스에 저장하겠지요.  
-그리고 더 중요한 것은 이 놈 보다 더 좋은 라이브러리가 많을 겁니다. 제가 자바를 주력 언어로 사용해서 파이썬 생태계를 잘 모르지만 
-pandas가 많이 쓰이는 것 같네요..
+그리고 더 중요한 것은 이 놈 보다 더 좋은 라이브러리가 많을 겁니다.  
+제가 자바를 주력 언어로 사용해서 파이썬 생태계를 잘 모르지만 아마 많은 고수분들이 만드신게 있을 듯 합니다
 
 ## 남은 것들
 처음에는 python을 공부하면서, 무언가를 하나 만들어보면서 다지려는 마음이었습니다.  
-그런데 여기까지 왔네요. 테스트도 부족합니다.
+그런데 여기까지 왔네요.  
 하지만 누군가에게 조금이라도 도움이 되었다면 하는 바램입니다.
