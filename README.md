@@ -82,8 +82,8 @@ https://github.com/ramoi/toobuk_vued3
 
 콘솔에서 아래 명령어로 확인할 수 있습니다.
 
-PS D:\> docker pull ramoi/toobuk:0.1 
-PS D:\> docker run -d -p 8000:5000 ramoi/toobuk:0.1
+      PS D:\> docker pull ramoi/toobuk:0.1 
+      PS D:\> docker run -d -p 8000:5000 ramoi/toobuk:0.1
 
 브라우져 접속 
 http://127.0.0.1:8000
